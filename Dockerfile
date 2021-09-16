@@ -13,12 +13,15 @@ EXPOSE 80
 RUN git clone --progress --verbose https://github.com/Microsoft/vcpkg.git
 RUN ./vcpkg/bootstrap-vcpkg.sh
 RUN ./vcpkg/vcpkg install opencv
+RUN ./vcpkg/vcpkg install threadpool
+RUN ./vcpkg/vcpkg install thread
+RUN ./vcpkg/vcpkg install threads
 
 COPY helloworld.cpp /app/
 COPY CMakeLists.txt /app/
 
-RUN cmake /app -DCMAKE_TOOLCHAIN_FILE="/vcpkg/scripts/buildsystems/vcpkg.cmake"
-RUN cmake --build /app
+RUN cmake /app/ -DCMAKE_TOOLCHAIN_FILE="/vcpkg/scripts/buildsystems/vcpkg.cmake"
+RUN cmake --build /app/
 CMD ["./app/CMakeHelloWorld"] 
 
 

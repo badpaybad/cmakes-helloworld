@@ -5,16 +5,23 @@
 #include "opencv2/videoio.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/video/background_segm.hpp"
+
 using namespace std;
 using namespace cv;
 
 int main(int argc, char *argv[]){
     cout << "Hello world\r\n";
 
+    std::string argv_str(argv[0]);
+    std::replace(argv_str.begin(),argv_str.end(),'\\','/');
+    std::string baseDir = argv_str.substr(0, argv_str.find_last_of("/"));
+
+    cout << "baseDir: "+ baseDir+"\r\n";
+
     std::string strFromChar;
 
-    //Mat img = imread("C:/work/cmakes-helloworld/1.png", IMREAD_GRAYSCALE);
-    Mat img = imread("/home/dunp/work/cmakes-helloworld/1.png", IMREAD_GRAYSCALE);
+    Mat img = imread("C:/work/cmakes-helloworld/1.png", IMREAD_GRAYSCALE);
+    //Mat img = imread("/home/dunp/work/cmakes-helloworld/1.png", IMREAD_GRAYSCALE);
     Mat dst;
 
     vector<vector<Point> > contours;
