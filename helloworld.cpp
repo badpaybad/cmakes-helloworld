@@ -13,7 +13,8 @@ int main(int argc, char *argv[]){
 
     std::string strFromChar;
 
-    Mat img = imread("C:/work/cmakes-helloworld/1.png", IMREAD_GRAYSCALE);
+    //Mat img = imread("C:/work/cmakes-helloworld/1.png", IMREAD_GRAYSCALE);
+    Mat img = imread("/home/dunp/work/cmakes-helloworld/1.png", IMREAD_GRAYSCALE);
     Mat dst;
 
     vector<vector<Point> > contours;
