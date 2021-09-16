@@ -2,8 +2,8 @@ cmake_minimum_required (VERSION 3.1)
 #ref: https://github.com/jameskbride/cmake-hello-world
 #https://vcpkg.io/en/docs/users/integration.html#cmake-integration
 #linux
-#set(CMAKE_TOOLCHAIN_FILE "/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake"
-#      CACHE STRING "")
+set(CMAKE_TOOLCHAIN_FILE "/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      CACHE STRING "")
 
 #win:
 #set(CMAKE_TOOLCHAIN_FILE "D:/robot/vcpkg/scripts/buildsystems/vcpkg.cmake"

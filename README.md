@@ -1,8 +1,9 @@
 #install vcpkg
 https://vcpkg.io/en/getting-started.html
 
-# apt install g++
-# apt install build-essential
+# apt install -y g++
+# apt install -y build-essential
+# apt install -y libgtk2.0-dev && pkg-config
 
 
 
