@@ -11,8 +11,10 @@ EXPOSE 80
 
 RUN git clone --progress --verbose https://github.com/Microsoft/vcpkg.git
 RUN ./vcpkg/bootstrap-vcpkg.sh
-#RUN ./vcpkg/vcpkg intall opencv
+RUN ./vcpkg/vcpkg intall opencv
+
 COPY helloworld.cpp /app/
+COPY CMakeLists.txt /app/
 
 RUN cmake /app -DCMAKE_TOOLCHAIN_FILE="/vcpkg/scripts/buildsystems/vcpkg.cmake"
 RUN cmake --build /app
