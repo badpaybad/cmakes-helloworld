@@ -25,4 +25,9 @@ add_executable(CMakeHelloWorld helloworld.cpp)
 
 target_link_libraries(CMakeHelloWorld PRIVATE ${OpenCV_LIBS})
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/1.png
+     #DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+     DESTINATION "Debug"
+     )
+
 #install (TARGETS CMakeHelloWorld DESTINATION bin)
