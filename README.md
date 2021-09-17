@@ -5,6 +5,18 @@
 
 	http://wiki.ros.org/catkin/CMakeLists.txt
 
+			set VCPKG_DEFAULT_TRIPLET=x64-windows
+
+			VCPKG built-in triplets:
+			arm-uwp
+			arm64-windows
+			x64-linux
+			x64-osx
+			x64-uwp
+			x64-windows-static
+			x64-windows
+			x86-windows
+
 # apt install
 
 				apt install update && apt-get install -y libgdiplus && rm -rf /var/lib/apt/lists/* && ln -s /lib/x86_64-linux-gnu/libdl.so.2 /lib/x86_64-linux-gnu/libdl.so && ln -s /usr/lib/libgdiplus.so /lib/x86_64-linux-gnu/libgdiplus.so

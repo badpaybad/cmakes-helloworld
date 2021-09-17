@@ -23,6 +23,10 @@ project (CMakeHelloWorld)
 
 # to find where lib or .dll or .so then after that should copy to root folder run if dont use vcpkg
 find_package(OpenCV CONFIG REQUIRED)
+find_package(uwebsockets)
+
+#find_path(UWEBSOCKETS_INCLUDE_DIRS "uwebsockets/App.h")
+#find_package(UWEBSOCKETS_INCLUDE_DIRS)
 
 message("PROJECT_NAME: ${PROJECT_NAME}")
 message("VCPKG_ROOT: ${VCPKG_ROOT}")
@@ -34,11 +38,18 @@ message("CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
 message("OpenCV_LIBS: ${OpenCV_LIBS}")
 message("OpenCV_DIR: ${OpenCV_DIR}")
 
+
+#set (UWEBSOCKETS_INCLUDE_DIRS "D:/robot/vcpkg/installed/x86-windows/include")
+#target_include_directories(${PROJECT_NAME} ${UWEBSOCKETS_INCLUDE_DIRS})
+message("UWEBSOCKETS_INCLUDE_DIRS: ${UWEBSOCKETS_INCLUDE_DIRS}")
+
 #include the subdirectory containing our libs
 add_subdirectory (libs)
-include_directories(libs)
 
-add_executable(${PROJECT_NAME} libs program.cpp)
+include_directories(libs ${UWEBSOCKETS_INCLUDE_DIRS})
+#
+#add_executable(${PROJECT_NAME} libs ${UWEBSOCKETS_INCLUDE_DIRS} "libs/httpserver.cpp" "program.cpp")
+add_executable(${PROJECT_NAME} libs "program.cpp")
 
 target_link_libraries(${PROJECT_NAME} Human ${OpenCV_LIBS})
 
