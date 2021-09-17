@@ -22,10 +22,15 @@
 				./vcpkg install opencv
 
 				cmake . 
-
 				cmake --build .
 
-				#can create folder build
+				#or 
+				cmake -B build -S .
+				cmake --build build
+				# -B build : mean all file generate into folder: build 
+				# -S . : mean source file include CMakeLists.txt , current folder
+
+				#or can create folder build
 				cd build
 				cmake ..
 				cmake --build ..

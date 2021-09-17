@@ -17,9 +17,13 @@ RUN ./vcpkg/vcpkg install opencv
 
 COPY libs/*.h /app/libs/
 COPY libs/*.cpp /app/libs/
+COPY libs/*.cxx /app/libs/
 COPY libs/*.txt /app/libs/
-COPY program.cpp /app/
-COPY CMakeLists.txt /app/
+
+COPY *.h /app/
+COPY *.cpp /app/
+COPY *.cxx /app/
+COPY *.txt /app/
 COPY 1.png /app/
 
 WORKDIR /app
