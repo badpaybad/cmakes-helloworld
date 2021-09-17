@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+using namespace std;
 
 namespace Human {
 
@@ -7,6 +8,7 @@ namespace Human {
     
     public:
       void sayHello();
+      void testOpenCv(std::string);
   };
 
   class Woman {

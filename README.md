@@ -42,3 +42,43 @@ The workaround is the following:
     run sudo apt-get install libgtk2.0-dev pkg-config
     reinstall OpenCV with ./vcpkg install opencv4 or whichever vcpkg command you used
 
+# using cmake with custom own libs
+
+subfolder/CMakeLists.txt eg: libs/CMakeLists.txt
+
+		find_package(OpenCV CONFIG REQUIRED)
+
+		add_library (Human 
+		human.h
+		human.cpp)
+
+		target_link_libraries(Human ${OpenCV_LIBS})
+
+		#install (TARGETS Hello DESTINATION bin)
+		install (FILES human.h DESTINATION libs)
+
+# visual studio code c_cpp_properties.json
+win
+		{
+			"configurations": [
+				{
+					"name": "Win32",
+					"includePath": [
+						"${workspaceFolder}/**",
+						//importance for #include no error
+						"D:/robot/vcpkg/packages/**"
+					],
+					"defines": [
+						"_DEBUG",
+						"UNICODE",
+						"_UNICODE"
+					],
+					"windowsSdkVersion": "10.0.18362.0",
+					"compilerPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\Hostx64\\x64\\cl.exe",
+					"cStandard": "c17",
+					"cppStandard": "c++17",
+					"intelliSenseMode": "windows-msvc-x64"
+				}
+			],
+			"version": 4
+		}

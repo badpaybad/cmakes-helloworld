@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
 
     //imshow("dst",dst);
     //char keycode = (char)waitKey(0);
+
     while (true)
     {
         // current date/time based on current system
