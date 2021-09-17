@@ -1,5 +1,7 @@
 #install vcpkg
-https://vcpkg.io/en/getting-started.html
+	https://vcpkg.io/en/getting-started.html
+
+	https://makefiletutorial.com/#getting-started
 
 # apt install
 
