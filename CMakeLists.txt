@@ -21,10 +21,6 @@ project (CMakeHelloWorld)
 #set (CMakeHelloWorld_VERSION_MAJOR 1)
 #set (CMakeHelloWorld_VERSION_MINOR 1)
 
-#include the subdirectory containing our libs
-add_subdirectory (libs)
-include_directories(libs)
-
 # to find where lib or .dll or .so then after that should copy to root folder run if dont use vcpkg
 find_package(OpenCV CONFIG REQUIRED)
 
@@ -36,6 +32,10 @@ message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 message("CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
 message("OpenCV_LIBS: ${OpenCV_LIBS}")
 message("OpenCV_DIR: ${OpenCV_DIR}")
+
+#include the subdirectory containing our libs
+add_subdirectory (libs)
+include_directories(libs)
 
 add_executable(${PROJECT_NAME} libs program.cpp)
 
@@ -61,4 +61,3 @@ ELSE()
      #copy own libs
      file(COPY ${MY_PUBLIC_HEADERS} DESTINATION "libs")
 ENDIF()
-

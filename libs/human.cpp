@@ -12,6 +12,11 @@ namespace Human {
     cout << "Hello, I am man!\n";    
   }
 
+/**
+ * @brief 
+ * 
+ * @param baseDir dir where file exec int main()
+ */
   void Man::testOpenCv(std::string baseDir){    
       Mat img = imread(baseDir + "/1.png", IMREAD_GRAYSCALE);
   }

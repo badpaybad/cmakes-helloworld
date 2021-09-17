@@ -3,6 +3,8 @@
 
 	https://makefiletutorial.com/#getting-started
 
+	http://wiki.ros.org/catkin/CMakeLists.txt
+
 # apt install
 
 				apt install update && apt-get install -y libgdiplus && rm -rf /var/lib/apt/lists/* && ln -s /lib/x86_64-linux-gnu/libdl.so.2 /lib/x86_64-linux-gnu/libdl.so && ln -s /usr/lib/libgdiplus.so /lib/x86_64-linux-gnu/libgdiplus.so
@@ -19,9 +21,15 @@
 
 				./vcpkg install opencv
 
-				cmake .
+				cmake . 
 
 				cmake --build .
+
+				#can create folder build
+				cd build
+				cmake ..
+				cmake --build ..
+
 
 # check your vcpkg path in MakeLists.txt CMAKE_TOOLCHAIN_FILE
 
