@@ -18,8 +18,8 @@ ENDIF()
 project (CMakeHelloWorld)
 
 #version
-set (CMakeHelloWorld_VERSION_MAJOR 1)
-set (CMakeHelloWorld_VERSION_MINOR 1)
+#set (CMakeHelloWorld_VERSION_MAJOR 1)
+#set (CMakeHelloWorld_VERSION_MINOR 1)
 
 #include the subdirectory containing our libs
 add_subdirectory (libs)
@@ -28,6 +28,7 @@ include_directories(libs)
 # to find where lib or .dll or .so then after that should copy to root folder run if dont use vcpkg
 find_package(OpenCV CONFIG REQUIRED)
 
+message("PROJECT_NAME: ${PROJECT_NAME}")
 message("VCPKG_ROOT: ${VCPKG_ROOT}")
 message("CMAKE_TOOLCHAIN_FILE: ${CMAKE_TOOLCHAIN_FILE}")
 message("WIN32: ${WIN32} #1: true, 0: false")
@@ -36,9 +37,9 @@ message("CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
 message("OpenCV_LIBS: ${OpenCV_LIBS}")
 message("OpenCV_DIR: ${OpenCV_DIR}")
 
-add_executable(CMakeHelloWorld libs program.cpp)
+add_executable(${PROJECT_NAME} libs program.cpp)
 
-target_link_libraries(CMakeHelloWorld Human ${OpenCV_LIBS})
+target_link_libraries(${PROJECT_NAME} Human ${OpenCV_LIBS})
 
 #copy custom resources , .dll .so if need
 file(GLOB MY_PUBLIC_HEADERS "libs/*.h")
@@ -46,7 +47,7 @@ file(GLOB MY_PUBLIC_HEADERS "libs/*.h")
 IF (WIN32)
      IF (NOT DEFINED CMAKE_TOOLCHAIN_FILE)      
           #if dont use vcpkg
-          #reference dll           
+          #reference dll by copy to folder run
           file (COPY "C:/opencv/build/x64/vc15/bin/" DESTINATION "Debug" FILES_MATCHING PATTERN "*.dll")
      ENDIF()
      
