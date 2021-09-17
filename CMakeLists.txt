@@ -26,6 +26,7 @@ find_package(OpenCV CONFIG REQUIRED)
 
 message("PROJECT_NAME: ${PROJECT_NAME}")
 message("VCPKG_ROOT: ${VCPKG_ROOT}")
+message("CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
 message("CMAKE_TOOLCHAIN_FILE: ${CMAKE_TOOLCHAIN_FILE}")
 message("WIN32: ${WIN32} #1: true, 0: false")
 message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -61,3 +62,22 @@ ELSE()
      #copy own libs
      file(COPY ${MY_PUBLIC_HEADERS} DESTINATION "libs")
 ENDIF()
+
+add_custom_target(clean-cmake-files
+   COMMAND ${CMAKE_COMMAND} -P clean-all.cmake
+)
+
+set(cmake_generated ${CMAKE_BINARY_DIR}/CMakeCache.txt
+                    ${CMAKE_BINARY_DIR}/cmake_install.cmake
+                    ${CMAKE_BINARY_DIR}/Makefile
+                    ${CMAKE_BINARY_DIR}/CMakeFiles
+)
+
+
+foreach(file ${cmake_generated})
+
+  if (EXISTS ${file})
+     file(REMOVE_RECURSE ${file})
+  endif()
+
+endforeach(file)
