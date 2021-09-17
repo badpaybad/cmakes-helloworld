@@ -25,11 +25,15 @@ set (CMakeHelloWorld_VERSION_MINOR 1)
 
 message("opencv lib: ${OpenCV_LIBS} ${OpenCV_DIR}")
 
+#include the subdirectory containing our libs
+add_subdirectory (libs)
+include_directories(libs)
+
 find_package(OpenCV CONFIG REQUIRED)
 
-add_executable(CMakeHelloWorld helloworld.cpp)
+add_executable(CMakeHelloWorld libs program.cpp)
 
-target_link_libraries(CMakeHelloWorld PRIVATE ${OpenCV_LIBS})
+target_link_libraries(CMakeHelloWorld Human ${OpenCV_LIBS})
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/1.png
      #DESTINATION ${CMAKE_CURRENT_BINARY_DIR}

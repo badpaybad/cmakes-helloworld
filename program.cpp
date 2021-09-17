@@ -8,13 +8,18 @@
 #include "opencv2/videoio.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/video/background_segm.hpp"
+#include "libs/human.h"
 
 using namespace std;
 using namespace cv;
+using namespace Human;
 
 int main(int argc, char *argv[])
 {
     cout << "Hello world\r\n";
+
+    Human::Man * me = new Man();
+    me->sayHello();
 
     std::string argv_str(argv[0]);
     std::replace(argv_str.begin(), argv_str.end(), '\\', '/');
@@ -26,6 +31,7 @@ int main(int argc, char *argv[])
 
     Mat img = imread(baseDir + "/1.png", IMREAD_GRAYSCALE);
     //Mat img = imread("/home/dunp/work/cmakes-helloworld/1.png", IMREAD_GRAYSCALE);
+    
     Mat dst;
 
     vector<vector<Point>> contours;

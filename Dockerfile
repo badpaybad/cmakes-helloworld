@@ -8,7 +8,7 @@ RUN apt-get install -y g++ cmake build-essential
 RUN apt-get install -y ffmpeg libsm6 libxext6 libgl1-mesa-glx libgl1
 RUN apt-get install -y pkg-config
 EXPOSE 80
-#EXPOSE 443
+#EXPOSE 443 
 
 RUN git clone --progress --verbose https://github.com/Microsoft/vcpkg.git
 RUN ./vcpkg/bootstrap-vcpkg.sh
