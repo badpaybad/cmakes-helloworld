@@ -5,15 +5,21 @@ cmake_minimum_required (VERSION 3.1)
 #docker || command line, also use in dockerfile to build
 #cmake . -DCMAKE_TOOLCHAIN_FILE="/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake"
 
-IF (DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-     IF (WIN32)
-          #win:
-          set(CMAKE_TOOLCHAIN_FILE "D:/robot/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
-     ELSE()
-          #linux
-          set(CMAKE_TOOLCHAIN_FILE "/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
-     ENDIF()
+set (_VCPKG_INSTALLED_DIR "")
+IF (WIN32)
+     set (_VCPKG_INSTALLED_DIR "D:/robot/vcpkg")     
+     message("win: ${VCPKG_TARGET_TRIPLET}")
+
+ELSE()
+     message("linux: ${VCPKG_TARGET_TRIPLET}")
+     set (_VCPKG_INSTALLED_DIR "/home/dunp/work/vcpkg")
 ENDIF()
+
+IF ( NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+     set(CMAKE_TOOLCHAIN_FILE "${_VCPKG_INSTALLED_DIR}/scripts/buildsystems/vcpkg.cmake")
+ENDIF()
+
+set (VCPKG_INSTALLED_INCLUDE_DIR "${_VCPKG_INSTALLED_DIR}/installed/${VCPKG_TARGET_TRIPLET}/include")
 
 project (CMakeHelloWorld)
 
@@ -24,34 +30,30 @@ project (CMakeHelloWorld)
 # to find where lib or .dll or .so then after that should copy to root folder run if dont use vcpkg
 find_package(OpenCV CONFIG REQUIRED)
 find_package(uwebsockets)
-
-#find_path(UWEBSOCKETS_INCLUDE_DIRS "uwebsockets/App.h")
-#find_package(UWEBSOCKETS_INCLUDE_DIRS)
-
+message("")
 message("PROJECT_NAME: ${PROJECT_NAME}")
-message("VCPKG_ROOT: ${VCPKG_ROOT}")
-message("CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
+message("VCPKG_INSTALLED_INCLUDE_DIR: ${VCPKG_INSTALLED_INCLUDE_DIR}")
 message("CMAKE_TOOLCHAIN_FILE: ${CMAKE_TOOLCHAIN_FILE}")
-message("WIN32: ${WIN32} #1: true, 0: false")
+message("")
 message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 message("CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
-message("OpenCV_LIBS: ${OpenCV_LIBS}")
+message("CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
+message("")
 message("OpenCV_DIR: ${OpenCV_DIR}")
-
-
-#set (UWEBSOCKETS_INCLUDE_DIRS "D:/robot/vcpkg/installed/x86-windows/include")
-#target_include_directories(${PROJECT_NAME} ${UWEBSOCKETS_INCLUDE_DIRS})
+message("OpenCV_LIBS: ${OpenCV_LIBS}")
+message("")
 message("UWEBSOCKETS_INCLUDE_DIRS: ${UWEBSOCKETS_INCLUDE_DIRS}")
-
+message("UWEBSOCKETS_LIBS: ${UWEBSOCKETS_LIBS}")
+message("")
 #include the subdirectory containing our libs
 add_subdirectory (libs)
 
-include_directories(libs ${UWEBSOCKETS_INCLUDE_DIRS})
+include_directories(libs ${VCPKG_INSTALLED_INCLUDE_DIR} ${UWEBSOCKETS_INCLUDE_DIRS})
 #
 #add_executable(${PROJECT_NAME} libs ${UWEBSOCKETS_INCLUDE_DIRS} "libs/httpserver.cpp" "program.cpp")
 add_executable(${PROJECT_NAME} libs "program.cpp")
 
-target_link_libraries(${PROJECT_NAME} Human ${OpenCV_LIBS})
+target_link_libraries(${PROJECT_NAME} Human ${OpenCV_LIBS} ${UWEBSOCKETS_LIBS})
 
 #copy custom resources , .dll .so if need
 file(GLOB MY_PUBLIC_HEADERS "libs/*.h")

@@ -16,11 +16,13 @@ RUN ./vcpkg/vcpkg install opencv
 #RUN ./vcpkg/vcpkg install threadpool
 
 COPY libs/*.h /app/libs/
+COPY libs/*.hpp /app/libs/
 COPY libs/*.cpp /app/libs/
 COPY libs/*.cxx /app/libs/
 COPY libs/*.txt /app/libs/
 
 COPY *.h /app/
+COPY *.hpp /app/
 COPY *.cpp /app/
 COPY *.cxx /app/
 COPY *.txt /app/
