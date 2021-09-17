@@ -6,15 +6,19 @@ cmake_minimum_required (VERSION 3.1)
 #cmake . -DCMAKE_TOOLCHAIN_FILE="/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake"
 
 set (_VCPKG_INSTALLED_DIR "")
-IF (WIN32)
+IF (WIN32)     
+     IF ( NOT DEFINED VCPKG_TARGET_TRIPLET)
+          set(VCPKG_TARGET_TRIPLET "x64-windows")
+     ENDIF()
      set (_VCPKG_INSTALLED_DIR "D:/robot/vcpkg")     
      message("win: ${VCPKG_TARGET_TRIPLET}")
-
 ELSE()
+     IF ( NOT DEFINED VCPKG_TARGET_TRIPLET)
+          set(VCPKG_TARGET_TRIPLET "x64-linux")
+     ENDIF()
      message("linux: ${VCPKG_TARGET_TRIPLET}")
      set (_VCPKG_INSTALLED_DIR "/home/dunp/work/vcpkg")
 ENDIF()
-
 IF ( NOT DEFINED CMAKE_TOOLCHAIN_FILE)
      set(CMAKE_TOOLCHAIN_FILE "${_VCPKG_INSTALLED_DIR}/scripts/buildsystems/vcpkg.cmake")
 ENDIF()
@@ -32,8 +36,8 @@ find_package(OpenCV CONFIG REQUIRED)
 find_package(uwebsockets)
 message("")
 message("PROJECT_NAME: ${PROJECT_NAME}")
-message("VCPKG_INSTALLED_INCLUDE_DIR: ${VCPKG_INSTALLED_INCLUDE_DIR}")
 message("CMAKE_TOOLCHAIN_FILE: ${CMAKE_TOOLCHAIN_FILE}")
+message("VCPKG_INSTALLED_INCLUDE_DIR: ${VCPKG_INSTALLED_INCLUDE_DIR}")
 message("")
 message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 message("CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
@@ -76,21 +80,22 @@ ELSE()
      file(COPY ${MY_PUBLIC_HEADERS} DESTINATION "libs")
 ENDIF()
 
-add_custom_target(clean-cmake-files
-   COMMAND ${CMAKE_COMMAND} -P clean-all.cmake
-)
+# add_custom_target(clean-cmake-files
+#    COMMAND ${CMAKE_COMMAND} -P clean-all.cmake
+# )
 
-set(cmake_generated ${CMAKE_BINARY_DIR}/CMakeCache.txt
-                    ${CMAKE_BINARY_DIR}/cmake_install.cmake
-                    ${CMAKE_BINARY_DIR}/Makefile
-                    ${CMAKE_BINARY_DIR}/CMakeFiles
-)
+# set(cmake_generated ${CMAKE_BINARY_DIR}/CMakeCache.txt
+#                     ${CMAKE_BINARY_DIR}/cmake_install.cmake
+#                     ${CMAKE_BINARY_DIR}/Makefile
+#                     ${CMAKE_BINARY_DIR}/CMakeFiles
+# )
 
 
-foreach(file ${cmake_generated})
+# foreach(file ${cmake_generated})
 
-  if (EXISTS ${file})
-     file(REMOVE_RECURSE ${file})
-  endif()
+#   if (EXISTS ${file})
+#      file(REMOVE_RECURSE ${file})
+#      file(REMOVE ${file})
+#   endif()
 
-endforeach(file)
+# endforeach(file)
