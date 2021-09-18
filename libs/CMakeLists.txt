@@ -7,6 +7,6 @@ add_library (Human
   )
  
 target_link_libraries(Human ${OpenCV_LIBS})
-
+target_include_directories(Human ${OpenCV_DIR})
 #install (TARGETS Hello DESTINATION bin)
 #install (FILES human.h DESTINATION libs)
