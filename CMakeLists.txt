@@ -4,39 +4,20 @@ cmake_minimum_required (VERSION 3.1)
 #https://github.com/microsoft/vcpkg/blob/master/docs/examples/installing-and-using-packages.md
 #docker || command line, also use in dockerfile to build
 #cmake . -DCMAKE_TOOLCHAIN_FILE="/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake"
+set (MY_VCPKG_INSTALLED_DIR "")
+if (WIN32)
+     set (MY_VCPKG_INSTALLED_DIR "D:/robot/vcpkg")     
+else()
+     set (MY_VCPKG_INSTALLED_DIR "/home/dunp/work/vcpkg")     
+endif()
+message("MY_VCPKG_INSTALLED_DIR: ${MY_VCPKG_INSTALLED_DIR}")
 
-# set (VCPKG_INSTALLED_DIR "")
-# IF (WIN32)     
-#      IF ( NOT DEFINED VCPKG_TARGET_TRIPLET)
-#           set(VCPKG_TARGET_TRIPLET "x64-windows")
-#      ENDIF()
-#      set (VCPKG_INSTALLED_DIR "D:/robot/vcpkg/")     
-#      message("win: ${VCPKG_TARGET_TRIPLET}")
-#      # IF ( NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-#      #      set(CMAKE_TOOLCHAIN_FILE "D:/robot/vcpkg/scripts/buildsystems/vcpkg.cmake")
-#      # ENDIF()
-# ELSE()
-#      # IF ( NOT DEFINED VCPKG_TARGET_TRIPLET)
-#      #      set(VCPKG_TARGET_TRIPLET "x64-linux")
-#      # ENDIF() 
-#      message("linux: ${VCPKG_TARGET_TRIPLET}")
-#      set (VCPKG_INSTALLED_DIR "/home/dunp/work/vcpkg/")
-#      # IF ( NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-#      #      set(CMAKE_TOOLCHAIN_FILE "/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake")
-#      # ENDIF()
-# ENDIF()
+set(MY_VCPKG_INSTALLED_DIR_INCLUDE "${MY_VCPKG_INSTALLED_DIR}/installed/${VCPKG_TARGET_TRIPLET}/include")
+message("MY_VCPKG_INSTALLED_DIR_INCLUDE: ${MY_VCPKG_INSTALLED_DIR_INCLUDE}")
 
-# IF (   NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-#      set(CMAKE_TOOLCHAIN_FILE "${VCPKG_INSTALLED_DIR}/scripts/buildsystems/vcpkg.cmake")
-# ENDIF()
-
-# set (VCPKG_INSTALLED_INCLUDE_DIR "${VCPKG_INSTALLED_DIR}/installed/${VCPKG_TARGET_TRIPLET}/include/")
-
-# include(${CMAKE_TOOLCHAIN_FILE})
-#linux
-#set(CMAKE_TOOLCHAIN_FILE "/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake")
-#win
-set(CMAKE_TOOLCHAIN_FILE "D:/robot/vcpkg/scripts/buildsystems/vcpkg.cmake")
+if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+     set(CMAKE_TOOLCHAIN_FILE "${MY_VCPKG_INSTALLED_DIR}/scripts/buildsystems/vcpkg.cmake")
+endif()
 
 project (CMakeHelloWorld)
 
@@ -46,11 +27,9 @@ set (CMakeHelloWorld_VERSION_MINOR 1)
 
 # to find where lib or .dll or .so then after that should copy to root folder run if dont use vcpkg
 
+message("CMAKE_TOOLCHAIN_FILE: ${CMAKE_TOOLCHAIN_FILE}")
 message("")
 message("PROJECT_NAME: ${PROJECT_NAME}")
-message("CMAKE_TOOLCHAIN_FILE: ${CMAKE_TOOLCHAIN_FILE}")
-message("VCPKG_INSTALLED_INCLUDE_DIR: ${VCPKG_INSTALLED_INCLUDE_DIR}")
-message("")
 message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 message("CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
 message("CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
@@ -61,14 +40,17 @@ message("OpenCV_DIR: ${OpenCV_DIR}")
 message("OpenCV_LIBS: ${OpenCV_LIBS}")
 message("")
 
-find_package(uwebsockets)
+#find_package(uwebsockets)
+#find_path(UWEBSOCKETS_INCLUDE_DIRS "uwebsockets/App.h")
+#find_library(UWEBSOCKETS_LIBS uwebsockets)
 message("UWEBSOCKETS_INCLUDE_DIRS: ${UWEBSOCKETS_INCLUDE_DIRS}")
 message("UWEBSOCKETS_LIBS: ${UWEBSOCKETS_LIBS}")
 message("")
+
 #include the subdirectory containing our libs
 add_subdirectory (libs)
 
-include_directories(libs ${VCPKG_INSTALLED_INCLUDE_DIR} ${UWEBSOCKETS_INCLUDE_DIRS} ${OpenCV_DIR})
+include_directories(libs ${MY_VCPKG_INSTALLED_DIR_INCLUDE} ${UWEBSOCKETS_INCLUDE_DIRS} ${OpenCV_DIR})
 #
 #add_executable(${PROJECT_NAME} libs ${UWEBSOCKETS_INCLUDE_DIRS} "libs/httpserver.cpp" "program.cpp")
 add_executable(${PROJECT_NAME} libs "program.cpp")
