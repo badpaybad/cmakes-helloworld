@@ -5,40 +5,44 @@ cmake_minimum_required (VERSION 3.1)
 #docker || command line, also use in dockerfile to build
 #cmake . -DCMAKE_TOOLCHAIN_FILE="/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake"
 
-set (VCPKG_INSTALLED_DIR "")
-IF (WIN32)     
-     IF ( NOT DEFINED VCPKG_TARGET_TRIPLET)
-          set(VCPKG_TARGET_TRIPLET "x64-windows")
-     ENDIF()
-     set (VCPKG_INSTALLED_DIR "D:/robot/vcpkg")     
-     message("win: ${VCPKG_TARGET_TRIPLET}")
-     # IF ( NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-     #      set(CMAKE_TOOLCHAIN_FILE "D:/robot/vcpkg/scripts/buildsystems/vcpkg.cmake")
-     # ENDIF()
-ELSE()
-     IF ( NOT DEFINED VCPKG_TARGET_TRIPLET)
-          set(VCPKG_TARGET_TRIPLET "x64-linux")
-     ENDIF()
-     message("linux: ${VCPKG_TARGET_TRIPLET}")
-     set (VCPKG_INSTALLED_DIR "/home/dunp/work/vcpkg")
-     # IF ( NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-     #      set(CMAKE_TOOLCHAIN_FILE "/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake")
-     # ENDIF()
-ENDIF()
+# set (VCPKG_INSTALLED_DIR "")
+# IF (WIN32)     
+#      IF ( NOT DEFINED VCPKG_TARGET_TRIPLET)
+#           set(VCPKG_TARGET_TRIPLET "x64-windows")
+#      ENDIF()
+#      set (VCPKG_INSTALLED_DIR "D:/robot/vcpkg/")     
+#      message("win: ${VCPKG_TARGET_TRIPLET}")
+#      # IF ( NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+#      #      set(CMAKE_TOOLCHAIN_FILE "D:/robot/vcpkg/scripts/buildsystems/vcpkg.cmake")
+#      # ENDIF()
+# ELSE()
+#      # IF ( NOT DEFINED VCPKG_TARGET_TRIPLET)
+#      #      set(VCPKG_TARGET_TRIPLET "x64-linux")
+#      # ENDIF() 
+#      message("linux: ${VCPKG_TARGET_TRIPLET}")
+#      set (VCPKG_INSTALLED_DIR "/home/dunp/work/vcpkg/")
+#      # IF ( NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+#      #      set(CMAKE_TOOLCHAIN_FILE "/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake")
+#      # ENDIF()
+# ENDIF()
 
-IF (   NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-     set(CMAKE_TOOLCHAIN_FILE "${VCPKG_INSTALLED_DIR}/scripts/buildsystems/vcpkg.cmake")
-ENDIF()
+# IF (   NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+#      set(CMAKE_TOOLCHAIN_FILE "${VCPKG_INSTALLED_DIR}/scripts/buildsystems/vcpkg.cmake")
+# ENDIF()
 
-set (VCPKG_INSTALLED_INCLUDE_DIR "${VCPKG_INSTALLED_DIR}/installed/${VCPKG_TARGET_TRIPLET}/include")
+# set (VCPKG_INSTALLED_INCLUDE_DIR "${VCPKG_INSTALLED_DIR}/installed/${VCPKG_TARGET_TRIPLET}/include/")
 
-include(${CMAKE_TOOLCHAIN_FILE})
+# include(${CMAKE_TOOLCHAIN_FILE})
+#linux
+#set(CMAKE_TOOLCHAIN_FILE "/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake")
+#win
+set(CMAKE_TOOLCHAIN_FILE "D:/robot/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 project (CMakeHelloWorld)
 
 #version
-#set (CMakeHelloWorld_VERSION_MAJOR 1)
-#set (CMakeHelloWorld_VERSION_MINOR 1)
+set (CMakeHelloWorld_VERSION_MAJOR 1)
+set (CMakeHelloWorld_VERSION_MINOR 1)
 
 # to find where lib or .dll or .so then after that should copy to root folder run if dont use vcpkg
 
