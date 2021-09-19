@@ -56,24 +56,32 @@ find_library(USOCKETS_LIB uSockets)
 find_package(unofficial-libuv CONFIG REQUIRED)
 find_library(LIBUV_LIB libuv)
 
+add_library (PRJ_LIBS 
+"libs/httpserver.h"
+"libs/httpserver.cpp"
+"libs/human.h"
+"libs/human.cpp"  
+)
+
 #include the subdirectory containing our libs
 add_subdirectory (libs)
 
 include_directories(libs ${MY_VCPKG_INSTALLED_DIR_INCLUDE} ${UWEBSOCKETS_INCLUDE_DIRS} ${OpenCV_DIR})
 #
 #add_executable(${PROJECT_NAME} libs ${UWEBSOCKETS_INCLUDE_DIRS} "libs/httpserver.cpp" "program.cpp")
-add_executable(${PROJECT_NAME} libs "program.cpp")
+add_executable(${PROJECT_NAME} "program.cpp")
 
 set (SHARED_LIBS 
      ZLIB::ZLIB
      ${USOCKETS_LIB}
-     ${LIBUV_LIB}
+     ${LIBUV_LIB}     
+     PRJ_LIBS     
 )
 
-target_link_libraries(${PROJECT_NAME} Human ${OpenCV_LIBS} ${SHARED_LIBS})
+target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} ${SHARED_LIBS})
 
 #copy custom resources , .dll .so if need
-file(GLOB MY_PUBLIC_HEADERS "libs/*.h")
+file(GLOB PRJ_LIBS_HEADERS "libs/*.h")
 
 IF (WIN32)
      IF (NOT DEFINED CMAKE_TOOLCHAIN_FILE)      
@@ -86,11 +94,11 @@ IF (WIN32)
      file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/1.png DESTINATION "Debug")
      
      #copy own libs *.h
-     file(COPY ${MY_PUBLIC_HEADERS} DESTINATION "Debug/libs")
+     file(COPY ${PRJ_LIBS_HEADERS} DESTINATION "Debug/libs")
 ELSE()
      
      #copy own libs
-     file(COPY ${MY_PUBLIC_HEADERS} DESTINATION "libs")
+     file(COPY ${PRJ_LIBS_HEADERS} DESTINATION "libs")
 ENDIF()
 
 # add_custom_target(clean-cmake-files

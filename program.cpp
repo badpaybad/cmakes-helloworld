@@ -11,92 +11,35 @@
 #include "opencv2/video/background_segm.hpp"
 
 #include "libs/human.h"
-//#include "libs/httpserver.h"
+#include "libs/httpserver.h"
 #include "uwebsockets/App.h"
 
 using namespace Human;
 
-//begin#httpserver#
+// //begin#httpserver#
 
 int __port = 9004;
 
-#ifndef HTTSERVER_DEF_HEADER
-#define HTTSERVER_DEF_HEADER
-
 #ifdef __cplusplus
-extern "C"
-{
+    extern "C" {
 #endif
-
-#include <stddef.h>
-    struct uws_app_s;
-    struct uws_req_s;
-    struct uws_res_s;
-    typedef struct uws_app_s uws_app_t;
-    typedef struct uws_req_s uws_req_t;
-    typedef struct uws_res_s uws_res_t;
-
-    uws_app_t *uws_create_app();
-    void uws_app_get(uws_app_t *app, const char *pattern, void (*handler)(uws_res_t *, uws_req_t *));
-    void uws_app_run(uws_app_t *);
-
-    void uws_app_listen(uws_app_t *app, int port, void (*handler)(void *));
-
-    void uws_res_end(uws_res_t *res, const char *data, size_t length);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
-
-uws_app_t *uws_create_app()
-{
-    return (uws_app_t *)new uWS::App();
-}
-
-void uws_app_get(uws_app_t *app, const char *pattern, void (*handler)(uws_res_t *, uws_req_t *))
-{
-    uWS::App *uwsApp = (uWS::App *)app;
-    uwsApp->get(pattern, [handler](auto *res, auto *req)
-                { handler((uws_res_t *)res, (uws_req_t *)req); });
-}
-
-void uws_app_run(uws_app_t *app)
-{
-    uWS::App *uwsApp = (uWS::App *)app;
-    uwsApp->run();
-
-    std::cout << "HttpServerStarted\r\n";
-}
-
-void uws_res_end(uws_res_t *res, const char *data, size_t length)
-{
-    uWS::HttpResponse<false> *uwsRes = (uWS::HttpResponse<false> *)res;
-    //uwsRes->end(data, length);
-    uwsRes->end(data);
-}
-
-void uws_app_listen(uws_app_t *app, int port, void (*handler)(void *))
-{
-    uWS::App *uwsApp = (uWS::App *)app;
-    uwsApp->listen(port, [handler](struct us_listen_socket_t *listen_socket)
-                   { handler((void *)listen_socket); });
-}
-
-void get_handler(uws_res_t *res, uws_req_t *req)
-{
-    uws_res_end(res, "Hello world!", 11);
-}
-
-void listen_handler(void *listen_socket)
-{
-    if (listen_socket)
+    void get_handler(uws_res_t *res, uws_req_t *req)
     {
-        printf("Listening on port: %d\r\n", __port);
+        uws_res_end(res, "Hello world!", 11);
     }
-}
-//end#httpserver#
+
+    void listen_handler(void *listen_socket)
+    {
+        if (listen_socket)
+        {
+            printf("Listening on port: %d\r\n", __port);
+        }
+    }
+
+#ifdef __cplusplus
+    }
+#endif
+// //end#httpserver#
 
 int main(int argc, char *argv[])
 {
