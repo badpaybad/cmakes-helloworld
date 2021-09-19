@@ -47,7 +47,7 @@ async def api_img2base64(image: UploadFile = File(...)):
 async def root():
     return {"message": "api description URI: /docs"}    
 
-# can move to other file
+# can move __main__ to other file
 
 if __name__ == "__main__":
     uvicorn.run("pysample:app", host="0.0.0.0", port=8001, log_level="info")

@@ -16,9 +16,9 @@ RUN pip3 install imutils
 RUN pip3 install python-multipart
 
 #CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
-CMD [ "python3", "program.py"]
+CMD [ "python3", "pysample.py"]
 
-#docker build -f Dockerfile -t chamthitudong .
+#docker build -f pysample.Dockerfile -t pysample .
 #9002 public port
-#8001 internal app docker port, defind in program.py
-#docker run -it --rm -p 9002:8001 --name chamthitudong_9002 chamthitudong
+#8001 internal app docker port, defind in pysample.py
+#docker run -it --rm -p 9002:8001 --name pysample_9002 pysample
