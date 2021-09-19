@@ -7,6 +7,7 @@ RUN apt-get install -y git curl zip unzip tar
 RUN apt-get install -y g++ cmake build-essential 
 RUN apt-get install -y ffmpeg libsm6 libxext6 libgl1-mesa-glx libgl1
 RUN apt-get install -y pkg-config
+RUN apt install -y libgtk-3-dev
 EXPOSE 80
 #EXPOSE 443 
 
