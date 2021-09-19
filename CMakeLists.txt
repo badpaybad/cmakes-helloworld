@@ -45,6 +45,7 @@ message("OpenCV_LIBS: ${OpenCV_LIBS}")
 message("")
 
 #find_package(uwebsockets CONFIG REQUIRED)
+
 find_path(UWEBSOCKETS_INCLUDE_DIRS "uwebsockets/App.h")
 #find_library(UWEBSOCKETS_LIBS uwebsockets)
 message("UWEBSOCKETS_INCLUDE_DIRS: ${UWEBSOCKETS_INCLUDE_DIRS}")
@@ -59,7 +60,16 @@ include_directories(libs ${MY_VCPKG_INSTALLED_DIR_INCLUDE} ${UWEBSOCKETS_INCLUDE
 #add_executable(${PROJECT_NAME} libs ${UWEBSOCKETS_INCLUDE_DIRS} "libs/httpserver.cpp" "program.cpp")
 add_executable(${PROJECT_NAME} libs "program.cpp")
 
-target_link_libraries(${PROJECT_NAME} Human ${OpenCV_LIBS})
+set (SHARED_LiBS 
+#ssl
+#crypto
+#uv
+#uWS
+#pthread
+#z
+)
+
+target_link_libraries(${PROJECT_NAME} Human ${OpenCV_LIBS} ${SHARED_LiBS})
 
 #copy custom resources , .dll .so if need
 file(GLOB MY_PUBLIC_HEADERS "libs/*.h")
