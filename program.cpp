@@ -61,6 +61,8 @@ using namespace Human;
     void uws_app_run(uws_app_t *app) {
         uWS::App *uwsApp = (uWS::App *) app;
         uwsApp->run();
+        
+        std::cout << "HttpServerStarted\r\n";
     }
 
     void uws_res_end(uws_res_t *res, const char *data, size_t length) {
@@ -79,7 +81,7 @@ using namespace Human;
 
 
 void get_handler(uws_res_t *res, uws_req_t *req) {
-    uws_res_end(res, "Hello CAPI!", 11);
+    uws_res_end(res, "Hello world!", 11);
 }
 
 void listen_handler(void *listen_socket) {
@@ -139,7 +141,7 @@ int main(int argc, char *argv[])
     
     uws_app_t *app = uws_create_app();
     uws_app_get(app, "/*", get_handler);
-    uws_app_listen(app, 3000, listen_handler);
+    uws_app_listen(app, 9004, listen_handler);
     uws_app_run(app);
 
     while (true)
