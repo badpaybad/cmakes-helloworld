@@ -82,28 +82,28 @@ subfolder/CMakeLists.txt eg: libs/CMakeLists.txt
 		#install (TARGETS Hello DESTINATION bin)
 		install (FILES human.h DESTINATION libs)
 
-# visual studio code c_cpp_properties.json
-win
-		{
-			"configurations": [
+# visual studio code .vscode/c_cpp_properties.json
+win:
 				{
-					"name": "Win32",
-					"includePath": [
-						"${workspaceFolder}/**",
-						//importance for #include no error
-						"D:/robot/vcpkg/packages/**"
+					"configurations": [
+						{
+							"name": "Win32",
+							"includePath": [
+								"${workspaceFolder}/**",
+								//importance for #include no error
+								"D:/robot/vcpkg/packages/**"
+							],
+							"defines": [
+								"_DEBUG",
+								"UNICODE",
+								"_UNICODE"
+							],
+							"windowsSdkVersion": "10.0.18362.0",
+							"compilerPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\Hostx64\\x64\\cl.exe",
+							"cStandard": "c11",
+							"cppStandard": "c++14",
+							"intelliSenseMode": "windows-msvc-x64"
+						}
 					],
-					"defines": [
-						"_DEBUG",
-						"UNICODE",
-						"_UNICODE"
-					],
-					"windowsSdkVersion": "10.0.18362.0",
-					"compilerPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\Hostx64\\x64\\cl.exe",
-					"cStandard": "c17",
-					"cppStandard": "c++17",
-					"intelliSenseMode": "windows-msvc-x64"
+					"version": 4
 				}
-			],
-			"version": 4
-		}
