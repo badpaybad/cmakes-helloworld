@@ -26,8 +26,8 @@ endif()
 project (CMakeHelloWorld)
 
 #version
-set (CMakeHelloWorld_VERSION_MAJOR 1)
-set (CMakeHelloWorld_VERSION_MINOR 1)
+set (${PROJECT_NAME}_VERSION_MAJOR 1)
+set (${PROJECT_NAME}_VERSION_MINOR 1)
 
 # to find where lib or .dll or .so then after that should copy to root folder run if dont use vcpkg
 
@@ -74,11 +74,12 @@ add_executable(${PROJECT_NAME} "program.cpp")
 set (SHARED_LIBS 
      ZLIB::ZLIB
      ${USOCKETS_LIB}
-     ${LIBUV_LIB}     
-     PRJ_LIBS     
+     ${LIBUV_LIB}               
 )
 
-target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} ${SHARED_LIBS})
+target_link_libraries(PRJ_LIBS ${OpenCV_LIBS} ${SHARED_LIBS})
+
+target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} ${SHARED_LIBS} PRJ_LIBS)
 
 #copy custom resources , .dll .so if need
 file(GLOB PRJ_LIBS_HEADERS "libs/*.h")

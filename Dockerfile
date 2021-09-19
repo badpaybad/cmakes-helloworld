@@ -15,9 +15,9 @@ RUN git clone --progress --verbose https://github.com/Microsoft/vcpkg.git
 RUN ./vcpkg/bootstrap-vcpkg.sh
 RUN ./vcpkg/vcpkg install pthreads:x64-linux
 RUN ./vcpkg/vcpkg install opencv
-# RUN ./vcpkg/vcpkg install zlib
-# RUN ./vcpkg/vcpkg install libuv
-# RUN ./vcpkg/vcpkg install usockets
+RUN ./vcpkg/vcpkg install zlib
+RUN ./vcpkg/vcpkg install libuv
+RUN ./vcpkg/vcpkg install usockets
 RUN ./vcpkg/vcpkg install uwebsockets:x64-linux
 
 COPY libs/*.h /app/libs/
