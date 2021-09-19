@@ -1,4 +1,4 @@
-#install vcpkg
+# install vcpkg
 	https://vcpkg.io/en/getting-started.html
 
 	https://makefiletutorial.com/#getting-started
@@ -32,6 +32,7 @@
 # command
 
 				./vcpkg install opencv
+				./vcpkg install uwebsockets
 
 				cmake . 
 				cmake --build .
@@ -84,6 +85,7 @@ subfolder/CMakeLists.txt eg: libs/CMakeLists.txt
 
 # visual studio code .vscode/c_cpp_properties.json
 win:
+
 				{
 					"configurations": [
 						{
