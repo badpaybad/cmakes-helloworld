@@ -18,3 +18,4 @@ x64
 CMakeHelloWorld
 build
 *.a
+__pycache__/*
