@@ -1,16 +1,12 @@
 #ifndef LIBUWS_CAPI_HEADER
     #define LIBUS_CAPI_HEADER
-
-    #include <stddef.h>    
-
+ 
     #ifdef __cplusplus
     extern "C" {
     #endif
-      
-    #ifdef __cplusplus
-    }
-    #endif
           
+        #include <stddef.h>   
+
         struct uws_app_s;
         struct uws_req_s;
         struct uws_res_s;
@@ -26,5 +22,9 @@
 
         void uws_res_end(uws_res_t *res, const char *data, size_t length);
 
+      
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif

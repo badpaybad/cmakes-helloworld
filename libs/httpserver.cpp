@@ -1,10 +1,12 @@
+
+#ifdef __cplusplus
+    extern "C" {
+#endif
+        
 #include "httpserver.h"
 #include "uwebsockets/App.h"
-
-extern "C" {
+    
   
-}
-
     uws_app_t *uws_create_app() {
         return (uws_app_t *) new uWS::App();
     }
@@ -33,4 +35,7 @@ extern "C" {
             handler((void *) listen_socket);
         });
     }
-
+    
+#ifdef __cplusplus
+}
+#endif
