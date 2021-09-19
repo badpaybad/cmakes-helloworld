@@ -110,8 +110,8 @@ int main(int argc, char *argv[])
     
     cv::Mat dst;
 
-    vector<vector<cv::Point>> contours;
-    vector<cv::Vec4i> hierarchy;
+    std::vector<std::vector<cv::Point>> contours;
+    std::vector<cv::Vec4i> hierarchy;
 
     findContours(img, contours, hierarchy, cv::RETR_CCOMP, cv::CHAIN_APPROX_SIMPLE);
 
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
     double maxArea = 0;
     for (; idx >= 0; idx = hierarchy[idx][0])
     {
-        const vector<cv::Point> &c = contours[idx];
+        const std::vector<cv::Point> &c = contours[idx];
         double area = fabs(cv::contourArea(cv::Mat(c)));
         if (area > maxArea)
         {
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
         // convert now to string form
         char *dt = ctime(&now);
 
-        cout << "The local date and time is: " << dt << endl;
+        std::cout << "The local date and time is: " << dt << std::endl;
 
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }

@@ -3,7 +3,6 @@
     
     #include <stdio.h>
     #include <iostream>
-    using namespace std;
 
     namespace Human {
 
