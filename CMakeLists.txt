@@ -49,8 +49,12 @@ message("")
 find_path(UWEBSOCKETS_INCLUDE_DIRS "uwebsockets/App.h")
 #find_library(UWEBSOCKETS_LIBS uwebsockets)
 message("UWEBSOCKETS_INCLUDE_DIRS: ${UWEBSOCKETS_INCLUDE_DIRS}")
-message("UWEBSOCKETS_LIBS: ${UWEBSOCKETS_LIBS}")
 message("")
+#https://github.com/uNetworking/uWebSockets/issues/1043
+find_package(ZLIB REQUIRED)
+find_library(USOCKETS_LIB uSockets)
+find_package(unofficial-libuv CONFIG REQUIRED)
+find_library(LIBUV_LIB libuv)
 
 #include the subdirectory containing our libs
 add_subdirectory (libs)
@@ -60,16 +64,13 @@ include_directories(libs ${MY_VCPKG_INSTALLED_DIR_INCLUDE} ${UWEBSOCKETS_INCLUDE
 #add_executable(${PROJECT_NAME} libs ${UWEBSOCKETS_INCLUDE_DIRS} "libs/httpserver.cpp" "program.cpp")
 add_executable(${PROJECT_NAME} libs "program.cpp")
 
-set (SHARED_LiBS 
-#ssl
-#crypto
-#uv
-#uWS
-#pthread
-#z
+set (SHARED_LIBS 
+     ZLIB::ZLIB
+     ${USOCKETS_LIB}
+     ${LIBUV_LIB}
 )
 
-target_link_libraries(${PROJECT_NAME} Human ${OpenCV_LIBS} ${SHARED_LiBS})
+target_link_libraries(${PROJECT_NAME} Human ${OpenCV_LIBS} ${SHARED_LIBS})
 
 #copy custom resources , .dll .so if need
 file(GLOB MY_PUBLIC_HEADERS "libs/*.h")
