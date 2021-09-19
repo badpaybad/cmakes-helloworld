@@ -1,12 +1,12 @@
 #ifndef HTTSERVER_DEF_HEADER
     #define HTTSERVER_DEF_HEADER
  
-    #include <stddef.h>   
+    #ifdef __cplusplus
+    extern "C" {
+    #endif         
 
-    // #ifdef __cplusplus
-    // extern "C" {
-    // #endif         
-extern "C" {
+    
+        #include <stddef.h>   
         struct uws_app_s;
         struct uws_req_s;
         struct uws_res_s;
@@ -22,9 +22,9 @@ extern "C" {
 
         void uws_res_end(uws_res_t *res, const char *data, size_t length);
 
-}      
-    // #ifdef __cplusplus
-    // }
-    // #endif
+     
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif

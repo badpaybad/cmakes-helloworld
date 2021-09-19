@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 3.1)
 set(CMAKE_CXX_STANDARD 17)
+#fix: error C2039: 'string_view': should c++17
 set(CMAKE_CXX_STANDARD_REQUIRED on)
+
 #ref: https://github.com/jameskbride/cmake-hello-world
 #https://vcpkg.io/en/docs/users/integration.html#cmake-integration
 #https://github.com/microsoft/vcpkg/blob/master/docs/examples/installing-and-using-packages.md
@@ -55,7 +57,7 @@ add_subdirectory (libs)
 include_directories(libs ${MY_VCPKG_INSTALLED_DIR_INCLUDE} ${UWEBSOCKETS_INCLUDE_DIRS} ${OpenCV_DIR})
 #
 #add_executable(${PROJECT_NAME} libs ${UWEBSOCKETS_INCLUDE_DIRS} "libs/httpserver.cpp" "program.cpp")
-add_executable(${PROJECT_NAME} libs "libs/httpserver.cpp" "program.cpp")
+add_executable(${PROJECT_NAME} libs "program.cpp")
 
 target_link_libraries(${PROJECT_NAME} Human ${OpenCV_LIBS})
 

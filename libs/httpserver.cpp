@@ -1,9 +1,9 @@
 #include "httpserver.h"
 #include "uwebsockets/App.h"
 
-// #ifdef __cplusplus
-//     extern "C" {
-// #endif
+#ifdef __cplusplus
+    extern "C" {
+#endif
   
     uws_app_t *uws_create_app() {
         return (uws_app_t *) new uWS::App();
@@ -34,6 +34,6 @@
         });
     }
     
-// #ifdef __cplusplus
-// }
-// #endif
+#ifdef __cplusplus
+}
+#endif
