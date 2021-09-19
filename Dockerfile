@@ -21,9 +21,9 @@ RUN ./vcpkg/vcpkg install usockets
 RUN ./vcpkg/vcpkg install uwebsockets:x64-linux
 
 COPY libs/*.h /app/libs/
-COPY libs/*.hpp /app/libs/
+#COPY libs/*.hpp /app/libs/
 COPY libs/*.cpp /app/libs/
-COPY libs/*.cxx /app/libs/
+#COPY libs/*.cxx /app/libs/
 COPY libs/*.txt /app/libs/
 
 COPY *.h /app/
