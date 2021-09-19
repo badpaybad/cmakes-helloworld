@@ -20,18 +20,18 @@ RUN ./vcpkg/vcpkg install libuv
 RUN ./vcpkg/vcpkg install usockets
 RUN ./vcpkg/vcpkg install uwebsockets:x64-linux
 
-COPY libs/*.h /app/libs/
+COPY ["libs/*.h","/app/libs/"]
 #COPY libs/*.hpp /app/libs/
-COPY libs/*.cpp /app/libs/
+COPY ["libs/*.cpp","/app/libs/"]
 #COPY libs/*.cxx /app/libs/
-COPY libs/*.txt /app/libs/
+COPY ["libs/*.txt","/app/libs/"]
 
-COPY *.h /app/
+COPY ["*.h","/app/"]
 #COPY *.hpp /app/
-COPY *.cpp /app/
+COPY ["*.cpp","/app/"]
 #COPY *.cxx /app/
-COPY *.txt /app/
-COPY 1.png /app/
+COPY ["*.txt","/app/"]
+COPY ["1.png","/app/"]
 
 WORKDIR /app
 RUN cmake . -DCMAKE_TOOLCHAIN_FILE="/vcpkg/scripts/buildsystems/vcpkg.cmake"
