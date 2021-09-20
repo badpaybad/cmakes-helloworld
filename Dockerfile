@@ -22,8 +22,8 @@ RUN ./vcpkg/vcpkg install usockets
 RUN ./vcpkg/vcpkg install uwebsockets:x64-linux
 RUN ./vcpkg/vcpkg install nlohmann-json:x64-linux
 
-RUN mkdir -p /app
-RUN mkdir -p /app/libs
+RUN mkdir -p /app/
+RUN mkdir -p /app/libs/
 
 COPY ["libs/*.h","/app/libs/"]
 #COPY libs/*.hpp /app/libs/
