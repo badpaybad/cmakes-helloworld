@@ -19,7 +19,8 @@ RUN ./vcpkg/vcpkg install zlib
 RUN ./vcpkg/vcpkg install libuv
 RUN ./vcpkg/vcpkg install usockets
 RUN ./vcpkg/vcpkg install uwebsockets:x64-linux
-#vcpkg install nlohmann-json
+RUN ./vcpkg/vcpkg install uwebsockets:x64-linux
+RUN ./vcpkg/vcpkg install nlohmann-json:x64-linux
 
 COPY ["libs/*.h","/app/libs/"]
 #COPY libs/*.hpp /app/libs/
