@@ -31,7 +31,7 @@ COPY ["libs/*.cpp","/app/libs/"]
 #COPY libs/*.cxx /app/libs/
 COPY ["libs/*.txt","/app/libs/"]
 
-COPY ["*.h","/app/"]
+#COPY ["*.h","/app/"]
 #COPY *.hpp /app/
 COPY ["*.cpp","/app/"]
 #COPY *.cxx /app/
