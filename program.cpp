@@ -25,9 +25,12 @@ int __port = 9004;
 #endif
     void get_handler(uws_res_t *res, uws_req_t *req)
     {
-        uws_res_end(res, "Hello world!", 11);
+        uws_res_end(res, "Hello world! I am Du", 11);
     }
-
+    void get_handler_about(uws_res_t *res, uws_req_t *req)
+    {
+        uws_res_end(res, "{'name':'nguyen phan du'}", 11);
+    }
     void listen_handler(void *listen_socket)
     {
         if (listen_socket)
@@ -43,7 +46,7 @@ int __port = 9004;
 
 int main(int argc, char *argv[])
 {
-    std::cout << "Hello world\r\n";
+    std::cout << "Hello world! I am Du\r\n";
 
     Human::Man *me = new Man();
     me->sayHello();
@@ -92,7 +95,8 @@ int main(int argc, char *argv[])
 
     uws_app_t *app = uws_create_app();
     //register routing:
-    uws_app_get(app, "/*", get_handler);
+    uws_app_get(app, "/", get_handler);
+    uws_app_get(app, "/about", get_handler_about);
 
     //start httpserver then block main thread
     uws_app_listen(app, __port, listen_handler);
