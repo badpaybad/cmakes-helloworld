@@ -20,7 +20,6 @@ RUN ./vcpkg/vcpkg install zlib
 RUN ./vcpkg/vcpkg install libuv
 RUN ./vcpkg/vcpkg install usockets
 RUN ./vcpkg/vcpkg install uwebsockets:x64-linux
-RUN ./vcpkg/vcpkg install uwebsockets:x64-linux
 RUN ./vcpkg/vcpkg install nlohmann-json:x64-linux
 
 RUN mkdir -p /app
