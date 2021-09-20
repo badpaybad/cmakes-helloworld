@@ -13,6 +13,7 @@
 #include "libs/human.h"
 #include "libs/httpserver.h"
 #include "uwebsockets/App.h"
+#include <nlohmann/json.hpp>
 
 using namespace Human;
 
@@ -29,7 +30,12 @@ int __port = 9004;
     }
     void get_handler_about(uws_res_t *res, uws_req_t *req)
     {
-        uws_res_end(res, "{'name':'nguyen phan du'}", 11);
+        auto j3 = nlohmann::json::parse(R"({"name": "nguyen phan du","nlohmann": "https://github.com/nlohmann/json", "json":true, "version":1})");
+        
+        //uws_res_end(res, "{'name':'nguyen phan du'}", 11);
+        auto about = j3.dump();
+        auto aboutC = about.c_str();
+        uws_res_end(res, aboutC,strlen(aboutC));
     }
     void listen_handler(void *listen_socket)
     {

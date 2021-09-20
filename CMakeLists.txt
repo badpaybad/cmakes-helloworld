@@ -56,6 +56,9 @@ find_library(USOCKETS_LIB uSockets)
 find_package(unofficial-libuv CONFIG REQUIRED)
 find_library(LIBUV_LIB libuv)
 
+find_package(nlohmann_json CONFIG REQUIRED)
+#target_link_libraries(main PRIVATE nlohmann_json nlohmann_json::nlohmann_json)
+
 add_library (PRJ_LIBS 
 "libs/httpserver.h"
 "libs/httpserver.cpp"
@@ -77,9 +80,9 @@ set (SHARED_LIBS
      ${LIBUV_LIB}               
 )
 
-target_link_libraries(PRJ_LIBS ${OpenCV_LIBS} ${SHARED_LIBS})
+target_link_libraries(PRJ_LIBS ${OpenCV_LIBS} ${SHARED_LIBS} nlohmann_json nlohmann_json::nlohmann_json)
 
-target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} ${SHARED_LIBS} PRJ_LIBS)
+target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} ${SHARED_LIBS} PRJ_LIBS nlohmann_json nlohmann_json::nlohmann_json)
 
 #copy custom resources , .dll .so if need
 file(GLOB PRJ_LIBS_HEADERS "libs/*.h")
