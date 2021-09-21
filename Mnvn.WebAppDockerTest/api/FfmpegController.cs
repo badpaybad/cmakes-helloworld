@@ -24,6 +24,7 @@ namespace Mnvn.WebAppDockerTest.api
         }
 
         [HttpPost]
+        [Route("Convert2mp4")]
         public async Task<string> Convert2mp4(IFormFile file)
         {
             var dirwww = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot").Replace("\\", "/");

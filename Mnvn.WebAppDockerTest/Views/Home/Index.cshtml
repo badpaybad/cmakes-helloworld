@@ -9,8 +9,10 @@
 <h3>
 
     <input id="fileImg" type="file" />
-    <button onclick="savefile('fileImg')">Upload</button>
+    <button onclick="savefile('fileImg')">Convert to mp4</button>
     <hr />
+    In case ajax post file not work, try use api: <a href="/swagger">swagger api docs</a>
+    <hr>
     @Html.Raw(Model)
 
 </h3>
@@ -23,15 +25,20 @@
             var files = document.getElementById(imgNewFileDomId).files;
             var formData = new FormData();
             for (var i = 0; i != files.length; i++) {
-                formData.append("image", files[i]);
+                formData.append("file", files[i]);
             }
             var deferred = $.Deferred();
-            var urlrequest = "http://localhost:5000/quizzes/upload";
+            var urlrequest = "http://localhost:5000/api/Ffmpeg/Convert2mp4";
                jQuery.ajax({
-                dataType: 'json', headers: {
+                //dataType: 'json', 
+                dataType: 'multipart/form-data', 
+                contentType:"multipart/form-data",
+                enctype: 'multipart/form-data',
+                headers: {
                     //'Authorization': 'Bearer ' + tokenSession
                     //'X-CSRF-TOKEN': 'xxxxxxxxxxxxxxxxxxxx',
                     //"access-control-allow-origin":"*"
+                    "Content-Type": "multipart/form-data"
                 },
                 crossDomain: true,
                 type: "POST",

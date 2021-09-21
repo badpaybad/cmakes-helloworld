@@ -41,6 +41,13 @@ namespace Mnvn.WebAppDockerTest
 
             });
 
+            services.AddCors(o => o.AddPolicy("AllowAllCors", builder =>
+            {
+                builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+            }));
+            
             services.AddControllers();
 
             services.AddRazorPages();
@@ -60,6 +67,7 @@ namespace Mnvn.WebAppDockerTest
                 app.UseHsts();
             }
 
+            app.UseCors("AllowAllCors");
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
