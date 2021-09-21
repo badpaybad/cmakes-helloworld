@@ -8,10 +8,6 @@
 				docker build -f phpsample.Dockerfile -t phptest .
 				docker run -it --rm -p 9005:9000 --name phptest_9005 phptest 
 
-# c/c++ Dockerfile
-
-				docker build -f Dockerfile -t vcpkgtest .
-				docker run -it --rm -p 9004:9004 --name vcpkgtest_9004 vcpkgtest 
 
 # c# csharp
 
@@ -20,7 +16,13 @@ go to folder Mnvn.WebAppDockerTest check Dockerfile
 				docker build -t mnvntest .
 				docker run -it --rm -p 5000:80 --name mnvntest_5000 mnvntest
 
-# install vcpkg
+
+# c/c++ Dockerfile
+
+				docker build -f Dockerfile -t vcpkgtest .
+				docker run -it --rm -p 9004:9004 --name vcpkgtest_9004 vcpkgtest 
+
+### install vcpkg
 	https://vcpkg.io/en/getting-started.html
 
 	https://makefiletutorial.com/#getting-started
@@ -39,7 +41,7 @@ go to folder Mnvn.WebAppDockerTest check Dockerfile
 			x64-windows
 			x86-windows
 
-# apt install
+### apt install
 
 				apt install update && apt-get install -y libgdiplus && rm -rf /var/lib/apt/lists/* && ln -s /lib/x86_64-linux-gnu/libdl.so.2 /lib/x86_64-linux-gnu/libdl.so && ln -s /usr/lib/libgdiplus.so /lib/x86_64-linux-gnu/libgdiplus.so
 				apt install -y g++
@@ -49,9 +51,9 @@ go to folder Mnvn.WebAppDockerTest check Dockerfile
 				apt install libgtk2.0-dev
 				apt install pkg-config
 				apt install libgtk-3-dev
-# create MakeLists.txt
+### create MakeLists.txt
 
-# command
+### command
 
 				./vcpkg install opencv
 				./vcpkg install uwebsockets
@@ -71,14 +73,14 @@ go to folder Mnvn.WebAppDockerTest check Dockerfile
 				cmake --build ..
 
 				#cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE="D:/robot/vcpkg/scripts/buildsystems/vcpkg.cmake"
-# check your vcpkg path in MakeLists.txt CMAKE_TOOLCHAIN_FILE
+### check your vcpkg path in MakeLists.txt CMAKE_TOOLCHAIN_FILE
 
 
-# code sample with opencv
+### code sample with opencv
 
 https://docs.opencv.org/4.5.2/examples.html
 
-# opencv -DWITH_GTK=ON
+### opencv -DWITH_GTK=ON
 
 The problem is vcpkg passes in the build option -DWITH_GTK=OFF when building OpenCV. The open issue: https://github.com/microsoft/vcpkg/issues/12621
 
@@ -90,7 +92,7 @@ The workaround is the following:
     run sudo apt-get install libgtk2.0-dev pkg-config
     reinstall OpenCV with ./vcpkg install opencv4 or whichever vcpkg command you used
 
-# using cmake with custom own libs
+### using cmake with custom own libs
 
 subfolder/CMakeLists.txt eg: libs/CMakeLists.txt
 
@@ -105,7 +107,7 @@ subfolder/CMakeLists.txt eg: libs/CMakeLists.txt
 		#install (TARGETS Hello DESTINATION bin)
 		install (FILES human.h DESTINATION libs)
 
-# visual studio code .vscode/c_cpp_properties.json
+### visual studio code .vscode/c_cpp_properties.json
 win:
 
 				{
