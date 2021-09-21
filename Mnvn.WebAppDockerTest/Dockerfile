@@ -22,10 +22,11 @@ COPY . ./Mnvn.WebAppDockerTest/
 WORKDIR "/src/Mnvn.WebAppDockerTest"
 
 #RUN dotnet nuget add source %FEED_SOURCE% -n PrivateFeed -u docker -p %FEED_ACCESSTOKEN% --store-password-in-clear-text --configfile nuget.config
-#RUN dotnet nuget add source http://118.70.117.208:8123/nuget -n omt1 -u user -p 123@123 --store-password-in-clear-text --configfile nuget.config
+
 #RUN dotnet build "Mnvn.WebAppDockerTest/Mnvn.WebAppDockerTest.csproj" -c Release -o /app/build
 #https://docs.microsoft.com/en-us/nuget/consume-packages/configuring-nuget-behavior
-RUN dotnet restore --configfile  "npm.config"
+RUN dotnet restore 
+#RUN dotnet restore --configfile  "npm.config"
 RUN dotnet build
 
 FROM build AS publish
