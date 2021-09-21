@@ -1,5 +1,11 @@
 <?php
-
+/*
+ command: php -S 0.0.0.0:80 phpsample.php 
+ will let server listener in port 80
+ so we do simple mvc with url dispatched to an funciton to process
+ using array to hold name of fuction, the key is url request
+ then we use call_user_func to invoke
+ */
 $uriContext = $_SERVER["REQUEST_URI"];
 $uriPathArr = explode("?", $uriContext);
 $uriPath = $uriPathArr[0];
@@ -33,7 +39,7 @@ function index(BaseRequest $requests)
 function about(BaseRequest $requests)
 {
     //your real logic code
-    return json_encode(["name" => "Nguyen Phan Du", "version" => "1.0.0"]);
+    return json_encode(["about" => "Nguyen Phan Du", "version" => "1.0.0"]);
 }
 //end:action definition
 
