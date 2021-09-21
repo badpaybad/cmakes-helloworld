@@ -35,8 +35,11 @@ USER phpsample
 
 EXPOSE 9000
 CMD ["php","-S" ,"0.0.0.0:9000" ,"phpsample.php"]
+
 #CMD ["php-fpm"]
-##/etc/php/fpm/pool.d/www.conf
+## to find php-fpm config: php -i | grep "Loaded Configuration File"
+## should be in: /usr/local/etc/php if use #FROM php:7.4-fpm
+## your custom put here: /etc/php-fpm.d/
 
 #docker build -f phpsample.Dockerfile -t phptest .
 #docker run -it --rm -p 9005:9000 --name phptest_9005 phptest 
