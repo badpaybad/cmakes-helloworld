@@ -1,3 +1,25 @@
+# pysample.Dockerfile
+
+				docker build -f pysample.Dockerfile -t pysample .
+				docker run -it --rm -p 9002:8001 --name pysample_9002 pysample
+
+# phpsample.Dockerfile
+
+				docker build -f phpsample.Dockerfile -t phptest .
+				docker run -it --rm -p 9005:9000 --name phptest_9005 phptest 
+
+# c/c++ Dockerfile
+
+				docker build -f Dockerfile -t vcpkgtest .
+				docker run -it --rm -p 9004:9004 --name vcpkgtest_9004 vcpkgtest 
+
+# c# csharp
+
+go to folder Mnvn.WebAppDockerTest check Dockerfile
+
+				docker build -t mnvntest .
+				docker run -it --rm -p 5000:80 --name mnvntest_5000 mnvntest
+
 # install vcpkg
 	https://vcpkg.io/en/getting-started.html
 

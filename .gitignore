@@ -21,3 +21,6 @@ build
 __pycache__/*
 bin
 obj
+*/obj/*
+*/bin/*
+*/.vs/*
