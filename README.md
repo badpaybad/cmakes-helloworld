@@ -61,7 +61,7 @@ go to folder Mnvn.WebAppDockerTest check Dockerfile
 
 ### command
 
-				./vcpkg install opencv
+				./vcpkg install opencv[core,cuda,contrib]
 				./vcpkg install uwebsockets
 
 				cmake . 
