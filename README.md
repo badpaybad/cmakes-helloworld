@@ -1,23 +1,34 @@
+# choose your language and ignore other
+
+except c/c++ have to read carefully 
+
 # pysample.Dockerfile
+
+main code uvicorn, fastapi pysample.py 
 
 				docker build -f pysample.Dockerfile -t pysample .
 				docker run -it --rm -p 9002:8001 --name pysample_9002 pysample
 
 # phpsample.Dockerfile
 
+main code phpsample.php , simple mvc with cmd: php -S 0.0.0.0:9000 phpsample.php :D 
+need someone create for laravel, lumen ...
+
 				docker build -f phpsample.Dockerfile -t phptest .
 				docker run -it --rm -p 9005:9000 --name phptest_9005 phptest 
 
 
-# c# csharp
+# c# csharp /Mnvn.WebAppDockerTest/Dockerfile
 
-go to folder Mnvn.WebAppDockerTest check Dockerfile
+main code go to folder Mnvn.WebAppDockerTest check Dockerfile
 
 				docker build -t mnvntest .
 				docker run -it --rm -p 5000:80 --name mnvntest_5000 mnvntest
 
 
 # c/c++ Dockerfile
+
+c/c++ quite complex, you need to know about vcpkg.io and cmake with how to create makelists.txt
 
 				docker build -f Dockerfile -t vcpkgtest .
 				docker run -it --rm -p 9004:9004 --name vcpkgtest_9004 vcpkgtest 
