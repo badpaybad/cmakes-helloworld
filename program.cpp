@@ -15,6 +15,11 @@
 #include "uwebsockets/App.h"
 #include <nlohmann/json.hpp>
 
+
+#include "opencv2/imgproc.hpp"
+#include "opencv2/ximgproc.hpp"
+#include "opencv2/videoio.hpp"
+
 using namespace Human;
 
 // //begin#httpserver#
@@ -56,6 +61,17 @@ int main(int argc, char *argv[])
 
     Human::Man *me = new Man();
     me->sayHello();
+
+    int length_threshold = 10;
+    float distance_threshold = 1.41421356f;   
+    double canny_th1 = 50.0;
+    double canny_th2 = 50.0;
+    int canny_aperture_size = 3;
+    bool do_merge = false;
+    
+    cv::Ptr<cv::ximgproc::FastLineDetector> fld = cv::ximgproc::createFastLineDetector(length_threshold,
+            distance_threshold, canny_th1, canny_th2, canny_aperture_size,
+            do_merge);
 
     std::string argv_str(argv[0]);
     std::replace(argv_str.begin(), argv_str.end(), '\\', '/');
