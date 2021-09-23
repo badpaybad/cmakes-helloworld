@@ -15,11 +15,10 @@
 #include "uwebsockets/App.h"
 #include <nlohmann/json.hpp>
 
-
 #include "opencv2/imgproc.hpp"
 #include "opencv2/ximgproc.hpp"
 #include "opencv2/videoio.hpp"
-
+#include <conio.h>
 using namespace Human;
 
 // //begin#httpserver#
@@ -27,7 +26,8 @@ using namespace Human;
 int __port = 9004;
 
 #ifdef __cplusplus
-    extern "C" {
+extern "C"
+{
 #endif
     void get_handler(uws_res_t *res, uws_req_t *req)
     {
@@ -36,11 +36,11 @@ int __port = 9004;
     void get_handler_about(uws_res_t *res, uws_req_t *req)
     {
         auto j3 = nlohmann::json::parse(R"({"name": "nguyen phan du","nlohmann": "https://github.com/nlohmann/json", "json":true, "version":1})");
-        
+
         //uws_res_end(res, "{'name':'nguyen phan du'}", 11);
         auto about = j3.dump();
         auto aboutC = about.c_str();
-        uws_res_end(res, aboutC,strlen(aboutC));
+        uws_res_end(res, aboutC, strlen(aboutC));
     }
     void listen_handler(void *listen_socket)
     {
@@ -51,27 +51,37 @@ int __port = 9004;
     }
 
 #ifdef __cplusplus
-    }
+}
 #endif
 // //end#httpserver#
 
 int main(int argc, char *argv[])
 {
+
     std::cout << "Hello world! I am Du\r\n";
+    
+    // while (true)
+    // {
+    //     if (kbhit() != 0)
+    //     {//read any key input from keyboard
+    //         int input = getch();            
+    //         if(input==32) break;
+    //     }
+    // }
 
     Human::Man *me = new Man();
     me->sayHello();
 
     int length_threshold = 10;
-    float distance_threshold = 1.41421356f;   
+    float distance_threshold = 1.41421356f;
     double canny_th1 = 50.0;
     double canny_th2 = 50.0;
     int canny_aperture_size = 3;
     bool do_merge = false;
-    
+
     cv::Ptr<cv::ximgproc::FastLineDetector> fld = cv::ximgproc::createFastLineDetector(length_threshold,
-            distance_threshold, canny_th1, canny_th2, canny_aperture_size,
-            do_merge);
+                                                                                       distance_threshold, canny_th1, canny_th2, canny_aperture_size,
+                                                                                       do_merge);
 
     std::string argv_str(argv[0]);
     std::replace(argv_str.begin(), argv_str.end(), '\\', '/');
