@@ -78,7 +78,7 @@ have to upgrade to cmake 3.2xxx
 				sudo apt update
 				sudo apt install cmake
 
-### command
+### commandc
 
 				./vcpkg install opencv[core,cuda,contrib]
 				./vcpkg install uwebsockets

@@ -18,7 +18,9 @@
 #include "opencv2/imgproc.hpp"
 #include "opencv2/ximgproc.hpp"
 #include "opencv2/videoio.hpp"
-#include <conio.h>
+
+//#include <conio.h>
+
 using namespace Human;
 
 // //begin#httpserver#
