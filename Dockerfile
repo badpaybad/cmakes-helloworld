@@ -15,7 +15,7 @@ RUN apt install -y libgtk-3-dev
 RUN git clone --progress --verbose https://github.com/Microsoft/vcpkg.git
 RUN ./vcpkg/bootstrap-vcpkg.sh
 RUN ./vcpkg/vcpkg install pthreads:x64-linux
-RUN ./vcpkg/vcpkg install opencv[core,cuda,contrib]
+RUN ./vcpkg/vcpkg install opencv[core,contrib]
 RUN ./vcpkg/vcpkg install zlib
 RUN ./vcpkg/vcpkg install libuv
 RUN ./vcpkg/vcpkg install usockets
