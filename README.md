@@ -70,6 +70,14 @@ c/c++ quite complex, you need to know about vcpkg.io and cmake with how to creat
 				$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
 ### create MakeLists.txt
 
+have to upgrade to cmake 3.2xxx
+
+				sudo apt purge --auto-remove cmake
+				wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+				sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
+				sudo apt update
+				sudo apt install cmake
+
 ### command
 
 				./vcpkg install opencv[core,cuda,contrib]
