@@ -79,9 +79,21 @@ int thread_show_keyboardInput()
     return 0;
 }
 
-int main()
+int main_async(int argc, char *argv[], std::string baseDir){
+    //this is not main thread, have to use mutex or __lockGlobal if want to access variable in other thread
+
+    std::cout << "baseDir: " + baseDir + "\r\n";
+
+    return 0;
+}
+
+int main(int argc, char *argv[])
 {
     __stop = false;
+    
+    std::string argv_str(argv[0]);
+    std::replace(argv_str.begin(), argv_str.end(), '\\', '/');
+    std::string baseDir = argv_str.substr(0, argv_str.find_last_of("/"));
 
     std::cout << "Press Enter then type 'q' key to quit\r\n";
 
@@ -89,6 +101,8 @@ int main()
 
     // do other thread here, use queue to do message passing between threads
     // do async
+
+    std::thread thrMainAsync(main_async,argc, argv, baseDir);
 
     while (true)
     {
@@ -129,7 +143,9 @@ int main()
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
+    thrMainAsync.join();
+    
     thrShowKeyboardInput.join();
-
+    
     std::cout << "\r\nGood bye! Happy coding!\r\n";
 }
