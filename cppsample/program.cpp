@@ -10,7 +10,7 @@
 
 #include <stack>
 #include <map>
-#include <queue>;
+#include <queue>
 
 #ifdef _WIN32
 
@@ -109,7 +109,7 @@ int thread_queue_action_invoke(std::string baseDir)
 
 int thread_show_keyboardInput()
 {
-    int qsize = 0;
+    size_t qsize = 0;
 
     while (true)
     {
@@ -199,11 +199,11 @@ int main(int argc, char *argv[])
         // prevent close main thread
         // to run services as single thread (main thread)
         // event loop services using queue to do message transfer
-
-        if (kbhit() != 0)
+        
+        if (_kbhit() != 0)
         {
             //read any key input from keyboard
-            int input = getch();
+            int input = _getch();
             if (__lockGlobal.try_lock())
             {
                 __qKeyboardInput.push(input);
@@ -215,7 +215,7 @@ int main(int argc, char *argv[])
             {
                 std::cout << "\r\nPress 'q' key to quit\r\n";
 
-                char q = getch();
+                char q = _getch();
                 if (q == 'q')
                 {
                     if (__lockGlobal.try_lock())
