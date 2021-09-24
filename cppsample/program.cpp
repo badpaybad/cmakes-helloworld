@@ -42,8 +42,7 @@
 
 std::mutex __lockGlobal;
 //thread safe with lock for queue
-std::queue<char> __qKeyboardInput;
-
+std::queue<int> __qKeyboardInput;
 bool __stop;
 
 int thread_show_keyboardInput()
@@ -71,7 +70,7 @@ int thread_show_keyboardInput()
         }
         if (c != NULL)
         {
-            std::cout << "\r\n char: " << c << " int: " << (int)c << ": Pressed " << qsize << ": remain in queue\r\n";
+            std::cout << "\r\n char: " << (char)c << " ascii: " << (int)c << ": Pressed, " << qsize << ": remain in queue\r\n";
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -84,7 +83,7 @@ int main()
 {
     __stop = false;
 
-    std::cout << "Press Enter then type 'q' key to quit";
+    std::cout << "Press Enter then type 'q' key to quit\r\n";
 
     std::thread thrShowKeyboardInput(thread_show_keyboardInput);
 
@@ -97,8 +96,9 @@ int main()
         {
             break;
         }
+        // prevent close main thread
         // to run services as single thread (main thread)
-        // event loop using queue to do message transfer
+        // event loop services using queue to do message transfer
 
         if (kbhit() != 0)
         {
@@ -106,7 +106,7 @@ int main()
             int input = getch();
             if (__lockGlobal.try_lock())
             {
-                __qKeyboardInput.push((char)input);
+                __qKeyboardInput.push(input);
                 __lockGlobal.unlock();
             }
             //if(input==32) break; //space pressed
@@ -130,4 +130,6 @@ int main()
     }
 
     thrShowKeyboardInput.join();
+
+    std::cout << "\r\nGood bye! Happy coding!\r\n";
 }
