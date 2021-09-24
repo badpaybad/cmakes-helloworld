@@ -10,15 +10,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED on)
 #cmake . -DCMAKE_TOOLCHAIN_FILE="/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake"
 set (MY_VCPKG_INSTALLED_DIR "")
 if (WIN32)
-     set (MY_VCPKG_INSTALLED_DIR "C:/vcpkg")     
-     if(NOT DEFINED VCPKG_TARGET_TRIPLET)
-          #set(VCPKG_TARGET_TRIPLET x64-windows)
-     endif()
+    set (MY_VCPKG_INSTALLED_DIR "C:/vcpkg")     
+    if(NOT DEFINED VCPKG_TARGET_TRIPLET)
+        set(VCPKG_TARGET_TRIPLET x64-windows)
+    endif()
 else()
-     set (MY_VCPKG_INSTALLED_DIR "/vcpkg")     
-     if(NOT DEFINED VCPKG_TARGET_TRIPLET)
-          #set(VCPKG_TARGET_TRIPLET x64-linux)
-     endif()
+    set (MY_VCPKG_INSTALLED_DIR "/vcpkg")     
+    if(NOT DEFINED VCPKG_TARGET_TRIPLET)
+        #set(VCPKG_TARGET_TRIPLET x64-linux)
+    endif()
 endif()
 message("MY_VCPKG_INSTALLED_DIR: ${MY_VCPKG_INSTALLED_DIR}")
 
@@ -26,10 +26,10 @@ set(MY_VCPKG_INSTALLED_DIR_INCLUDE "${MY_VCPKG_INSTALLED_DIR}/installed/${VCPKG_
 message("MY_VCPKG_INSTALLED_DIR_INCLUDE: ${MY_VCPKG_INSTALLED_DIR_INCLUDE}")
 
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-     set(CMAKE_TOOLCHAIN_FILE "${MY_VCPKG_INSTALLED_DIR}/scripts/buildsystems/vcpkg.cmake")
+    set(CMAKE_TOOLCHAIN_FILE "${MY_VCPKG_INSTALLED_DIR}/scripts/buildsystems/vcpkg.cmake")
 endif()
 
-project (CMakeHelloWorld)
+project (cppsample)
 
 #version
 set (${PROJECT_NAME}_VERSION_MAJOR 1)
@@ -66,14 +66,12 @@ find_package(nlohmann_json CONFIG REQUIRED)
 #target_link_libraries(main PRIVATE nlohmann_json nlohmann_json::nlohmann_json)
 
 add_library (PRJ_LIBS 
-"libs/httpserver.h"
-"libs/httpserver.cpp"
-"libs/human.h"
-"libs/human.cpp"  
+"libs/common.h"
+"libs/common.cpp"
 )
 
-#include the subdirectory containing our libs
-add_subdirectory (libs)
+#include the subdirectory containing our libs if you subdir have CMakeLists.txt
+#add_subdirectory (libs)
 
 include_directories(libs ${MY_VCPKG_INSTALLED_DIR_INCLUDE} ${UWEBSOCKETS_INCLUDE_DIRS} ${OpenCV_DIR})
 #
@@ -101,7 +99,7 @@ IF (WIN32)
      ENDIF()
      
      #add resource file
-     file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/1.png DESTINATION "Debug")
+     #file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/1.png DESTINATION "Debug")
      
      #copy own libs *.h
      file(COPY ${PRJ_LIBS_HEADERS} DESTINATION "Debug/libs")
