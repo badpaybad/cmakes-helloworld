@@ -63,16 +63,18 @@ int thread_show_keyboardInput()
             if (qsize > 0)
             {
                 c = __qKeyboardInput.front();
+
                 __qKeyboardInput.pop();
+                qsize = qsize - 1;
             }
             __lockGlobal.unlock();
         }
         if (c != NULL)
         {
-            std::cout << "\r\n char: " << c << " int: " << (int)c << ": Pressed " << qsize << ": remain\r\n";
+            std::cout << "\r\n char: " << c << " int: " << (int)c << ": Pressed " << qsize << ": remain in queue\r\n";
         }
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 
     return 0;
@@ -110,12 +112,16 @@ int main()
             //if(input==32) break; //space pressed
             if (input == 13)
             {
-                std::cout << "\r\nQress 'q' key to quit\r\n";
+                std::cout << "\r\nPress 'q' key to quit\r\n";
 
                 char q = getch();
                 if (q == 'q')
                 {
-                    __stop = true;
+                    if (__lockGlobal.try_lock())
+                    {
+                        __stop = true;
+                        __lockGlobal.unlock();
+                    }
                 }
             }
         }
