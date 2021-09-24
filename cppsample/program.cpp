@@ -24,6 +24,7 @@
 #include <stdlib.h>
 
 #include <curses.h>
+//./vcpkg install ncurses
 //sudo apt-get install libncurses5-dev libncursesw5-dev
 //sudo yum install ncurses-devel ncurses
 #endif
