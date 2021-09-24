@@ -65,12 +65,12 @@ find_library(LIBUV_LIB libuv)
 find_package(nlohmann_json CONFIG REQUIRED)
 #target_link_libraries(main PRIVATE nlohmann_json nlohmann_json::nlohmann_json)
 
-add_library (PRJ_LIBS 
-"libs/httpserver.h"
-"libs/httpserver.cpp"
-"libs/human.h"
-"libs/human.cpp"  
+file (GLOB PRJ_LIBS_SOURCE 
+"libs/*.h"
+"libs/*.cpp"
 )
+
+add_library (PRJ_LIBS ${PRJ_LIBS_SOURCE})
 
 #include the subdirectory containing our libs
 add_subdirectory (libs)

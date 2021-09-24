@@ -65,10 +65,12 @@ find_library(LIBUV_LIB libuv)
 find_package(nlohmann_json CONFIG REQUIRED)
 #target_link_libraries(main PRIVATE nlohmann_json nlohmann_json::nlohmann_json)
 
-add_library (PRJ_LIBS 
-"libs/common.h"
-"libs/common.cpp"
+file (GLOB PRJ_LIBS_SOURCE 
+"libs/*.h"
+"libs/*.cpp"
 )
+
+add_library (PRJ_LIBS ${PRJ_LIBS_SOURCE})
 
 #include the subdirectory containing our libs if you subdir have CMakeLists.txt
 #add_subdirectory (libs)
