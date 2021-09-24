@@ -38,19 +38,25 @@
 
 int main(){
     
-    std::cout << "Press Enter key to quit";
+    std::cout << "Press Enter then type 'q' key to quit";
 
     while (true)
     {
+        // to run services as single thread (main thread)
+
+        // do other thread here, use queue to do message passing between threads
+
         if (kbhit() != 0)
         {
             //read any key input from keyboard
             int input = getch();            
             //if(input==32) break; //space pressed
-            if(input==13) break;
+            if(input==13) {
+                char q= getch();            
+                if(q=='q') return 0;
+            }
         }
 
-        
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     
