@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <iostream>
 #include <string>
@@ -12,6 +11,7 @@
 #include <stack>
 #include <map>
 #include <queue>
+#include "common.h"
 
 #ifndef __namespace__ProgramContext
 #define __namespace__ProgramContext

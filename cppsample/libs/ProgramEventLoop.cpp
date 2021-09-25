@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <iostream>
 #include <string>
@@ -14,32 +13,12 @@
 #include <queue>
 #include <tuple>
 
+#include "common.h"
+
 #include "ProgramContext.cpp"
 
 #ifndef __class__ProgramEventLoop
 #define __class__ProgramEventLoop
-
-struct task_json
-{
-    std::string jsonData = NULL;
-    std::function<void(std::string)> handle = NULL;
-    
-    task_json( std::string jsonDataToHandle=NULL, std::function<void(std::string)> actionHandle=NULL)
-    : jsonData(jsonDataToHandle),handle(actionHandle){
-
-    }
-
-    bool operator==(task_json &input)
-    {
-        return jsonData == input.jsonData && &handle == &input.handle;
-    }
-
-    bool operator!=(task_json &input)
-    {
-        return jsonData != input.jsonData || &handle != &input.handle;
-    }
-
-} __taskNull{NULL, NULL};
 
 /**
  * @brief 
@@ -49,13 +28,17 @@ class ProgramEventLoop
 {
     //std::mutex &__lockGlobal;
     std::mutex __lockEventLoop;
-    std::queue<task_json> __qVoid;
+    std::queue<TaskJson> __qVoid;
     int __stop = 1;
     int __runing = 0;
     std::thread __thread;
 
     void thread_queue_action_invoke()
     {
+
+        TaskJson t(__taskJsonNull.jsonData, __taskJsonNull.handle);
+        int shouldInvoke = 0;
+
         while (true)
         {
             if (__stop == 1)
@@ -63,27 +46,40 @@ class ProgramEventLoop
                 break;
             }
 
-            task_json t = __taskNull;
-
             if (__lockEventLoop.try_lock())
             {
                 if (__qVoid.size() > 0)
                 {
                     t = __qVoid.front();
                     __qVoid.pop();
+                    shouldInvoke = 1;
+                }
+                else
+                {
+                    shouldInvoke = 0;
                 }
                 __lockEventLoop.unlock();
             }
 
-            if (t != __taskNull)
+            if (shouldInvoke == 1 && t != __taskJsonNull)
             {
-                // do fire and forget, if too much can overheat CPU, can do semarphore lock to keep concurrent thread runing
-                //std::thread ta(a);
+                if (t.handle)
+                {
+                    // do fire and forget, if too much can overheat CPU, can do semarphore lock to keep concurrent thread runing
+                    //std::thread ta(a);
 
-                //do block one by one
-                t.handle(t.jsonData);
-
-                delete &t;
+                    //do block one by one
+                    //t->handle(&t->jsonData);
+                    t.handle(t.jsonData);
+                    // try
+                    // {
+                    //     delete[] & t;
+                    // }
+                    // catch (char *ex)
+                    // {
+                    //     __log(ex);
+                    // }
+                }
             }
 
             //std::this_thread::sleep_for(std::chrono::nanoseconds(1));//this stress CPU
@@ -100,7 +96,6 @@ class ProgramEventLoop
 public:
     ProgramEventLoop() : __thread()
     {
-        ProgramContext::__version = "version 2";
     }
 
     ~ProgramEventLoop()
@@ -115,7 +110,7 @@ public:
      * @param a void function callable
      * @return int 
      */
-    void queue_action(task_json task)
+    void queue_action(TaskJson task)
     {
         if (__lockEventLoop.try_lock())
         {

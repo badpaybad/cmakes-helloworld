@@ -36,12 +36,12 @@
 // #include "opencv2/video/background_segm.hpp"
 
 // #include "uwebsockets/App.h"
-//#include <nlohmann/json.hpp>
+#include <nlohmann/json.hpp>
 
 #include "libs/common.h"
 #include "libs/common.h"
 #include "libs/ProgramContext.cpp"
-//#include "libs/ProgramEventLoop.cpp"
+#include "libs/ProgramEventLoop.cpp"
 
 //cmake -B build -S .
 //cmake --build build
@@ -51,8 +51,37 @@ std::queue<int> __qKeyboardInput;
 std::stack<int> __stackTest;
 std::map<std::string, std::string> __mapTest;
 
-//ProgramEventLoop *_programEventLoop;
+ProgramEventLoop *_programEventLoop;
+void test(){
+    std::cout << (__taskJsonNull == __taskJsonNull) << "  __taskJsonNull == __taskJsonNull \n";
 
+    TaskJson tj1{"du", [](std::string x)
+                 { std::cout << "tj1 handle inside---"; }};
+
+    TaskJson tj2{"du", [](std::string x)
+                 { std::cout << "tj2 handle inside---"; }};
+
+    TaskJson tj3 = tj1;
+    //{tj1.jsonData, tj1.handle};
+
+    std::cout << (tj1 == tj2) << "  tj1 == tj2 \n"
+              << (tj3.jsonData) << "------\r\n";
+    std::cout << (tj1 == tj3) << "  tj1 == tj3 \n";
+
+    std::string myname = "Du";
+    std::cout << myname << " myname\n";
+
+    std::cout << &myname << " &myname\n";
+
+    std::string *addrof_myname = &myname;
+    std::cout << addrof_myname << " std::string *addrof_myname = &myname; \n";
+
+    std::cout << *addrof_myname << " *addrof_myname \n";
+    std::string addrof__myname = *&myname;
+    std::cout << addrof__myname << " addrof__myname = *&myname\n";
+
+    std::cout << &addrof__myname << " &addrof__myname \n";
+}
 int thread_show_keyboardInput()
 {
     size_t qsize = 0;
@@ -93,78 +122,44 @@ int thread_show_keyboardInput()
 
 int thread_main_async(int argc, char *argv[], std::string baseDir)
 {
-    int var = 20; // actual variable declaration.
-    int *ip;      // pointer variable
-
-    ip = &var; // store address of var in pointer variable
-
-    std::cout << "Value of var variable: ";
-    std::cout << var << std::endl;
-
-    // print the address stored in ip pointer variable
-    std::cout << "Address stored in ip variable: ";
-    std::cout << ip << std::endl;
-
-    // access the value at the address available in pointer
-    std::cout << "Value of *ip variable: ";
-    std::cout << *ip << std::endl;
-
-    // assign var with new value
-    *ip = 50;
-    std::cout << "New value assigned *ip = 50; Address stored in ip variable: ";
-    std::cout << ip << std::endl;
-
-    std::cout << "New Value of var variable: ";
-    std::cout << var << std::endl;
-
-    std::cout << "&ip: ";
-    std::cout << &ip << std::endl;
-    std::cout << "*ip: ";
-    std::cout << *ip << std::endl;
-
-    std::cout << "&var: ";
-    std::cout << &var << std::endl;
-
-    ///end testpointer
 
     __mapTest["baseDir"] = baseDir;
 
+    //test use map
+    //todo: may lack here cause thread may not safe, __mapTest assign key baseDir in thread thread_main_async, but queue_action will run in thread thrEventLoop(thread_queue_action_invoke)
+    auto find = __mapTest.find("baseDir");
+
     //do background in other thread, no block current thread
 
-    // task_json ttest;
-    // ttest.jsonData = "{}";
-    // ttest.handle = [](std::string)
-    // {
-    //     //anonymous function , lambda function
-    //     std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    //     std::cout << "\r\nqueue_action: delay 0.5 sec to run, anonymous function , lambda function\r\n";
+    TaskJson ttest;
+    ttest.jsonData = "{'xxx':'xyz'}";
+    ttest.handle = [](std::string input)
+    {
+        //anonymous function , lambda function
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::cout << "\r\nqueue_action: delay 0.5 sec to run, anonymous function , lambda function";
+        std::cout << "\r\n----------jsonData: " << input << "-----------\r\n";
+    };
 
-    //     //test use map
-    //     //todo: may lack here cause thread may not safe, __mapTest assign key baseDir in thread thread_main_async, but queue_action will run in thread thrEventLoop(thread_queue_action_invoke)
+    _programEventLoop->queue_action(ttest);
 
-    //     auto find = __mapTest.find("baseDir");
-    //     if (find != __mapTest.end())
-    //         std::cout << "\r\nmap Found: " << find->first << ": " << find->second << "\r\n";
-    // };
-
-    // _programEventLoop->queue_action(ttest);
-
+    if (find != __mapTest.end())
+        std::cout << "\r\n__mapTest Found: " << find->first << ": " << find->second << "\r\n";
     return 0;
 }
 
 int main(int argc, char *argv[])
 {
+    //test();  
     ProgramContext::init(argc, argv);
 
     //this is not main thread, have to use mutex or __lockGlobal if want to access variable in other thread
-    std::cout << "\r\nNumber of threads = " << std::thread::hardware_concurrency() << "\r\n";
+    std::cout << "\r\nNumber of cpu = " << std::thread::hardware_concurrency() << "\r\n";
 
     std::cout << "baseDir: " + ProgramContext::__baseDir + "\r\n";
 
-    ProgramContext::__stop = 0;
-
-    // _programEventLoop = new ProgramEventLoop();
-    // _programEventLoop->start();
+    _programEventLoop = new ProgramEventLoop();
+    _programEventLoop->start();
 
     // do other thread here, use queue to do message passing between threads
     // do async
@@ -174,7 +169,6 @@ int main(int argc, char *argv[])
     std::cout << "Press 'Enter' for show menu\r\n";
 
     std::thread thrShowKeyboardInput(thread_show_keyboardInput);
-
     while (true)
     {
         if (ProgramContext::__stop == 1)
@@ -207,26 +201,23 @@ int main(int argc, char *argv[])
                 {
                     ProgramContext::exit();
                 }
+
                 if (q == (int)'a')
                 {
-                    // nlohmann::json data;
-                    // data["name"] = "nguyen phan du";
-                    // auto jsonData = data.dump();
+                    time_t now = time(0);
+                    char *dt = ctime(&now);
 
-                    //task_json t1;
-                    //t1.jsonData = "jsonData";
+                    nlohmann::json data;
+                    data["name"] = "nguyen phan du";
+                    data["datenow"] = dt;
+                    auto jsonData = data.dump();
 
-                    //here is lambad, anonymous func, can callable any void function
-                    // t1.handle = [](std::string jsonInput)
-                    // {
-                    //     time_t now = time(0);
-                    //     char *dt = ctime(&now);
-                    //     std::cout << "\r\n_programEventLoop->queue_action called at: " << dt << "\r\n";
-                    //     std::cout << "\r\n"
-                    //               << jsonInput << "\r\n";
-                    // };
-
-                    //_programEventLoop->queue_action(t1);
+                    _programEventLoop->queue_action(
+                        TaskJson(jsonData,
+                                 [](std::string msgOnInvoke)
+                                 {
+                                     __log(msgOnInvoke);
+                                 }));
                 }
             }
         }
