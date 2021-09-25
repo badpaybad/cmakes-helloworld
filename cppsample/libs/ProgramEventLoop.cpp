@@ -26,14 +26,14 @@ class ProgramEventLoop
 
     void thread_queue_action_invoke()
     {
-        std::function<void()> a = NULL;
-
         while (true)
         {
             if (__stop == 1)
             {
                 break;
             }
+
+            std::function<void()> a = NULL;
 
             if (__lockEventLoop.try_lock())
             {
@@ -45,11 +45,13 @@ class ProgramEventLoop
                 __lockEventLoop.unlock();
             }
 
-            // std::cout << "\r\n"<<__qVoid.size() <<"\r\n";
-
             if (a != NULL)
-            {
-                a();
+            {   
+                // do fire and forget, if too much can overheat CPU, can do semarphore lock to keep concurrent thread runing
+                //std::thread ta(a); 
+
+                //do block one by one
+                a();                
                 a = NULL;
             }
 
