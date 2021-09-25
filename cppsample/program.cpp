@@ -52,35 +52,61 @@ std::stack<int> __stackTest;
 std::map<std::string, std::string> __mapTest;
 
 ProgramEventLoop *_programEventLoop;
-void test(){
-    std::cout << (__taskJsonNull == __taskJsonNull) << "  __taskJsonNull == __taskJsonNull \n";
+void test()
+{
 
-    TaskJson tj1{"du", [](std::string x)
-                 { std::cout << "tj1 handle inside---"; }};
+    TaskJson t1{"t1", [](std::string i1) {
 
-    TaskJson tj2{"du", [](std::string x)
-                 { std::cout << "tj2 handle inside---"; }};
 
-    TaskJson tj3 = tj1;
-    //{tj1.jsonData, tj1.handle};
+    }};
 
-    std::cout << (tj1 == tj2) << "  tj1 == tj2 \n"
-              << (tj3.jsonData) << "------\r\n";
-    std::cout << (tj1 == tj3) << "  tj1 == tj3 \n";
+    TaskJson t2(t1.jsonData, t1.handle);
 
-    std::string myname = "Du";
-    std::cout << myname << " myname\n";
+    std::function<void(std::string)> h = [](std::string i2) {
+            std::cout << "Same function: h, data: "<< i2;
+    };
 
-    std::cout << &myname << " &myname\n";
+    std::function<void(std::string)> *h4 = &h;
 
-    std::string *addrof_myname = &myname;
-    std::cout << addrof_myname << " std::string *addrof_myname = &myname; \n";
+    TaskJson t3{"t3", h};
 
-    std::cout << *addrof_myname << " *addrof_myname \n";
-    std::string addrof__myname = *&myname;
-    std::cout << addrof__myname << " addrof__myname = *&myname\n";
+    TaskJson t4{"t4", *h4};
 
-    std::cout << &addrof__myname << " &addrof__myname \n";
+    auto t3_t4 = t3 == t4;
+
+    std::cout << t3_t4;
+
+    _programEventLoop->queue_action(t3);
+    _programEventLoop->queue_action(t4);
+
+    // std::cout << (__taskJsonNull == __taskJsonNull) << "  __taskJsonNull == __taskJsonNull \n";
+
+    // TaskJson tj1{"du", [](std::string x)
+    //              { std::cout << "tj1 handle inside---"; }};
+
+    // TaskJson tj2{"du", [](std::string x)
+    //              { std::cout << "tj2 handle inside---"; }};
+
+    // TaskJson tj3 = tj1;
+    // //{tj1.jsonData, tj1.handle};
+
+    // std::cout << (tj1 == tj2) << "  tj1 == tj2 \n"
+    //           << (tj3.jsonData) << "------\r\n";
+    // std::cout << (tj1 == tj3) << "  tj1 == tj3 \n";
+
+    // std::string myname = "Du";
+    // std::cout << myname << " myname\n";
+
+    // std::cout << &myname << " &myname\n";
+
+    // std::string *addrof_myname = &myname;
+    // std::cout << addrof_myname << " std::string *addrof_myname = &myname; \n";
+
+    // std::cout << *addrof_myname << " *addrof_myname \n";
+    // std::string addrof__myname = *&myname;
+    // std::cout << addrof__myname << " addrof__myname = *&myname\n";
+
+    // std::cout << &addrof__myname << " &addrof__myname \n";
 }
 int thread_show_keyboardInput()
 {
@@ -150,7 +176,6 @@ int thread_main_async(int argc, char *argv[], std::string baseDir)
 
 int main(int argc, char *argv[])
 {
-    //test();  
     ProgramContext::init(argc, argv);
 
     //this is not main thread, have to use mutex or __lockGlobal if want to access variable in other thread
@@ -160,6 +185,8 @@ int main(int argc, char *argv[])
 
     _programEventLoop = new ProgramEventLoop();
     _programEventLoop->start();
+        
+    test();
 
     // do other thread here, use queue to do message passing between threads
     // do async

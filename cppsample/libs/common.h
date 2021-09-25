@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include <chrono>
 #include <ctime>
@@ -14,13 +15,11 @@
 #include <queue>
 #include <tuple>
 
-
 #ifndef __global_log
 #define __global_log
-void __log(std::string msg){
-    std::cout << "\r\n------------\r\n";
+void __log(std::string msg)
+{
     std::cout << msg;
-    std::cout << "\r\n------------\r\n";
 }
 #endif
 
@@ -66,7 +65,15 @@ public:
     }
     bool operator==(TaskJson input)
     {
-        std::cout << (jsonData) << ": value\r\n";
+        // std::cout << "\r\n--------------\r\n";
+        // std::cout << (jsonData);
+        // std::cout << "\r\n";
+        // std::cout << (&handle);
+        // std::cout << "\r\n";
+        // std::cout << (input.jsonData);        
+        // std::cout << "\r\n";
+        // std::cout << (&input.handle);
+        // std::cout << "\r\n-----------\r\n";
 
         //compare value
         return jsonData == input.jsonData
