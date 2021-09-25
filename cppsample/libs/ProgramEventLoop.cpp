@@ -12,22 +12,25 @@
 #include <stack>
 #include <map>
 #include <queue>
-#include "ProgramEventLoop.h"
-
+/**
+ * @brief 
+ * class for queue action do in other thread, no block current
+ */
 class ProgramEventLoop
 {
     std::mutex __lockEventLoop;
     std::queue<std::function<void()>> __qVoid;
-    int __stop=1;
-    int __runing=0;
+    int __stop = 1;
+    int __runing = 0;
+    std::thread __thread;
 
-    int thread_queue_action_invoke()
+    void thread_queue_action_invoke()
     {
         std::function<void()> a = NULL;
 
         while (true)
         {
-            if (__stop==1)
+            if (__stop == 1)
             {
                 break;
             }
@@ -41,8 +44,8 @@ class ProgramEventLoop
                 }
                 __lockEventLoop.unlock();
             }
-           
-           // std::cout << "\r\n"<<__qVoid.size() <<"\r\n";
+
+            // std::cout << "\r\n"<<__qVoid.size() <<"\r\n";
 
             if (a != NULL)
             {
@@ -50,54 +53,53 @@ class ProgramEventLoop
                 a = NULL;
             }
 
-            std::this_thread::sleep_for(std::chrono::microseconds(1));
+            std::this_thread::sleep_for(std::chrono::nanoseconds(1));
             //std::this_thread::sleep_for(std::chrono::seconds(1));
         }
 
         if (__lockEventLoop.try_lock())
         {
-            if (__runing)
-            {
-                __runing = 0;
-            }
+            __runing = 0;
             __lockEventLoop.unlock();
         }
-
-        return 0;
     }
-
-    std::thread __thread;
 
 public:
     ProgramEventLoop() : __thread()
     {
     }
+
     ~ProgramEventLoop()
     {
         stop();
 
         delete[] & __thread;
     }
-
-    int queue_action(std::function<void()> a)
+    /**
+     * @brief 
+     * queue_action
+     * @param a void function callable
+     * @return int 
+     */
+    void queue_action(std::function<void()> a)
     {
         if (__lockEventLoop.try_lock())
         {
             __qVoid.push(a);
             __lockEventLoop.unlock();
-
         }
-
-        return 0;
     }
-    int start()
+    /**
+     * @brief 
+     * 
+     */
+    void start()
     {
-      
         if (__lockEventLoop.try_lock())
         {
-            if (__runing==1)
+            if (__runing == 1)
             {
-                return 0;
+                return;
             }
 
             __runing = 1;
@@ -107,10 +109,12 @@ public:
         __stop = 0;
 
         __thread = std::thread(&ProgramEventLoop::thread_queue_action_invoke, this);
-
-        return 0;
     }
-    int stop()
+    /**
+     * @brief 
+     * 
+     */
+    void stop()
     {
         if (__lockEventLoop.try_lock())
         {
@@ -119,8 +123,26 @@ public:
         }
 
         if (__thread.joinable())
+        {
             __thread.join();
+            __runing = 0;
+        }
+    }
 
-        return 0;
+    /**
+     * @brief Get the State object
+     * 
+     * @return std::string 
+     */
+    std::string GetState()
+    {
+        if (__runing == 1)
+            return "RUNING";
+        if (__stop == 1)
+            return "STOPED";
+        if (__stop == 0)
+            return "STARTED";
+
+        return "";
     }
 };

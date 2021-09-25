@@ -105,8 +105,7 @@ int thread_show_keyboardInput()
 int thread_main_async(int argc, char *argv[], std::string baseDir)
 {
     //this is not main thread, have to use mutex or __lockGlobal if want to access variable in other thread
-    std::cout << "\r\nNumber of threads = "
-              << std::thread::hardware_concurrency() << "\r\n";
+    std::cout << "\r\nNumber of threads = " << std::thread::hardware_concurrency() << "\r\n";
 
     std::cout << "baseDir: " + baseDir + "\r\n";
     __mapTest["baseDir"] = baseDir;
@@ -130,11 +129,41 @@ int thread_main_async(int argc, char *argv[], std::string baseDir)
     return 0;
 }
 
+void test_pointer()
+{
+    int var = 20; // actual variable declaration.
+    int *ip;      // pointer variable
+
+    ip = &var; // store address of var in pointer variable
+
+    std::cout << "Value of var variable: ";
+    std::cout << var << std::endl;
+
+    // print the address stored in ip pointer variable
+    std::cout << "Address stored in ip variable: ";
+    std::cout << ip << std::endl;
+
+    // access the value at the address available in pointer
+    std::cout << "Value of *ip variable: ";
+    std::cout << *ip << std::endl;
+
+    // assign var with new value
+    *ip = 50;
+    std::cout << "New value assigned *ip = 50; Address stored in ip variable: ";
+    std::cout << ip << std::endl;
+
+    std::cout << "New Value of var variable: ";
+    std::cout << var << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
+    test_pointer();
+
     __stop = false;
 
     _programEventLoop = new ProgramEventLoop();
+    _programEventLoop->start();
 
     std::string argv_str(argv[0]);
     std::replace(argv_str.begin(), argv_str.end(), '\\', '/');
@@ -148,8 +177,6 @@ int main(int argc, char *argv[])
     // do async
 
     std::thread thrMainAsync(thread_main_async, argc, argv, baseDir);
-
-    _programEventLoop->start();
 
     while (true)
     {
