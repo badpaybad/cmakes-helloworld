@@ -13,8 +13,8 @@
 #include <queue>
 #include "common.h"
 
-#ifndef __namespace__ProgramContext
-#define __namespace__ProgramContext
+#ifndef NAMESPACE_PROGRAM_CONTEXT
+#define NAMESPACE_PROGRAM_CONTEXT
 
 namespace ProgramContext
 {

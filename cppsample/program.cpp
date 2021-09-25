@@ -107,7 +107,8 @@ void test()
     // std::cout << addrof__myname << " addrof__myname = *&myname\n";
 
     // std::cout << &addrof__myname << " &addrof__myname \n";
-}
+};
+
 int thread_show_keyboardInput()
 {
     size_t qsize = 0;
@@ -144,7 +145,7 @@ int thread_show_keyboardInput()
     }
 
     return 0;
-}
+};
 
 int thread_main_async(int argc, char *argv[], std::string baseDir)
 {
@@ -172,7 +173,7 @@ int thread_main_async(int argc, char *argv[], std::string baseDir)
     if (find != __mapTest.end())
         std::cout << "\r\n__mapTest Found: " << find->first << ": " << find->second << "\r\n";
     return 0;
-}
+};
 
 int main(int argc, char *argv[])
 {
@@ -259,4 +260,4 @@ int main(int argc, char *argv[])
     std::cout << "\r\nGood bye! Happy coding!\r\n";
 
     return 0;
-}
+};

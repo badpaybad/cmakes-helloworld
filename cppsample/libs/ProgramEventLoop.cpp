@@ -17,8 +17,8 @@
 
 #include "ProgramContext.cpp"
 
-#ifndef __class__ProgramEventLoop
-#define __class__ProgramEventLoop
+#ifndef CLASS_PROGRAM_EVENT_LOOP
+#define CLASS_PROGRAM_EVENT_LOOP
 
 /**
  * @brief 
@@ -31,7 +31,7 @@ class ProgramEventLoop
     std::queue<TaskJson> __qVoid;
     int __stop = 1;
     int __runing = 0;
-    std::thread __thread;
+    std::thread __threadEventLoop;
 
     void thread_queue_action_invoke()
     {
@@ -92,9 +92,9 @@ class ProgramEventLoop
             __lockEventLoop.unlock();
         }
     }
-
+;
 public:
-    ProgramEventLoop() : __thread()
+    ProgramEventLoop() : __threadEventLoop()
     {
     }
 
@@ -102,7 +102,7 @@ public:
     {
         stop();
 
-        delete[] & __thread;
+        delete[] & __threadEventLoop;
     }
     /**
      * @brief 
@@ -137,7 +137,7 @@ public:
 
         __stop = 0;
 
-        __thread = std::thread(&ProgramEventLoop::thread_queue_action_invoke, this);
+        __threadEventLoop = std::thread(&ProgramEventLoop::thread_queue_action_invoke, this);
     }
     /**
      * @brief 
@@ -151,9 +151,9 @@ public:
             __lockEventLoop.unlock();
         }
 
-        if (__thread.joinable())
+        if ( __threadEventLoop.joinable())
         {
-            __thread.join();
+            __threadEventLoop.join();
             __runing = 0;
         }
     }

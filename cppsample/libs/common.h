@@ -23,17 +23,17 @@ void __log(std::string msg)
 }
 #endif
 
-#ifndef __global_stringEmpty
-#define __global_stringEmpty
+#ifndef GLOBAL_STRING_EMTPY
+#define GLOBAL_STRING_EMTPY
 #define __stringEmpty std::string("")
 #endif
-#ifndef __global_voidEmpty
-#define __global_voidEmpty
+#ifndef GLOBAL_VOID_EMPTY
+#define GLOBAL_VOID_EMPTY
 #define __voidEmpty std::function<void(std::string)>()
 #endif
 
-#ifndef __class_TaskJson
-#define __class_TaskJson
+#ifndef CLASS_TASK_JSON
+#define CLASS_TASK_JSON
 
 struct MyLatLng
 {
