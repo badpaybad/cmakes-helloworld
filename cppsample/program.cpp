@@ -41,7 +41,7 @@
 #include "libs/common.h"
 #include "libs/common.h"
 #include "libs/ProgramContext.cpp"
-#include "libs/ProgramEventLoop.cpp"
+//#include "libs/ProgramEventLoop.cpp"
 
 //cmake -B build -S .
 //cmake --build build
@@ -51,7 +51,7 @@ std::queue<int> __qKeyboardInput;
 std::stack<int> __stackTest;
 std::map<std::string, std::string> __mapTest;
 
-ProgramEventLoop *_programEventLoop;
+//ProgramEventLoop *_programEventLoop;
 
 int thread_show_keyboardInput()
 {
@@ -131,23 +131,23 @@ int thread_main_async(int argc, char *argv[], std::string baseDir)
 
     //do background in other thread, no block current thread
 
-    task_json ttest;
-    ttest.jsonData = "{}";
-    ttest.handle = [](std::string)
-    {
-        //anonymous function , lambda function
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        std::cout << "\r\nqueue_action: delay 0.5 sec to run, anonymous function , lambda function\r\n";
+    // task_json ttest;
+    // ttest.jsonData = "{}";
+    // ttest.handle = [](std::string)
+    // {
+    //     //anonymous function , lambda function
+    //     std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    //     std::cout << "\r\nqueue_action: delay 0.5 sec to run, anonymous function , lambda function\r\n";
 
-        //test use map
-        //todo: may lack here cause thread may not safe, __mapTest assign key baseDir in thread thread_main_async, but queue_action will run in thread thrEventLoop(thread_queue_action_invoke)
+    //     //test use map
+    //     //todo: may lack here cause thread may not safe, __mapTest assign key baseDir in thread thread_main_async, but queue_action will run in thread thrEventLoop(thread_queue_action_invoke)
 
-        auto find = __mapTest.find("baseDir");
-        if (find != __mapTest.end())
-            std::cout << "\r\nmap Found: " << find->first << ": " << find->second << "\r\n";
-    };
+    //     auto find = __mapTest.find("baseDir");
+    //     if (find != __mapTest.end())
+    //         std::cout << "\r\nmap Found: " << find->first << ": " << find->second << "\r\n";
+    // };
 
-    _programEventLoop->queue_action(ttest);
+    // _programEventLoop->queue_action(ttest);
 
     return 0;
 }
@@ -163,8 +163,8 @@ int main(int argc, char *argv[])
 
     ProgramContext::__stop = 0;
 
-    _programEventLoop = new ProgramEventLoop();
-    _programEventLoop->start();
+    // _programEventLoop = new ProgramEventLoop();
+    // _programEventLoop->start();
 
     // do other thread here, use queue to do message passing between threads
     // do async
@@ -213,20 +213,20 @@ int main(int argc, char *argv[])
                     // data["name"] = "nguyen phan du";
                     // auto jsonData = data.dump();
 
-                    task_json t1;
-                    t1.jsonData = "jsonData";
+                    //task_json t1;
+                    //t1.jsonData = "jsonData";
 
                     //here is lambad, anonymous func, can callable any void function
-                    t1.handle = [](std::string jsonInput)
-                    {
-                        time_t now = time(0);
-                        char *dt = ctime(&now);
-                        std::cout << "\r\n_programEventLoop->queue_action called at: " << dt << "\r\n";
-                        std::cout << "\r\n"
-                                  << jsonInput << "\r\n";
-                    };
+                    // t1.handle = [](std::string jsonInput)
+                    // {
+                    //     time_t now = time(0);
+                    //     char *dt = ctime(&now);
+                    //     std::cout << "\r\n_programEventLoop->queue_action called at: " << dt << "\r\n";
+                    //     std::cout << "\r\n"
+                    //               << jsonInput << "\r\n";
+                    // };
 
-                    _programEventLoop->queue_action(t1);
+                    //_programEventLoop->queue_action(t1);
                 }
             }
         }
@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
 
     thrMainAsync.join();
     thrShowKeyboardInput.join();
-    _programEventLoop->stop();
+    //_programEventLoop->stop();
 
     std::cout << "\r\nGood bye! Happy coding!\r\n";
 
