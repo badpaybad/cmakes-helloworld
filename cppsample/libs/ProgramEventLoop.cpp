@@ -12,14 +12,44 @@
 #include <stack>
 #include <map>
 #include <queue>
+#include <tuple>
+
+#include "ProgramContext.cpp"
+
+#ifndef __class__ProgramEventLoop
+#define __class__ProgramEventLoop
+
+struct task_json
+{
+    std::string jsonData = NULL;
+    std::function<void(std::string)> handle = NULL;
+    
+    task_json( std::string jsonDataToHandle=NULL, std::function<void(std::string)> actionHandle=NULL)
+    : jsonData(jsonDataToHandle),handle(actionHandle){
+
+    }
+
+    bool operator==(task_json &input)
+    {
+        return jsonData == input.jsonData && &handle == &input.handle;
+    }
+
+    bool operator!=(task_json &input)
+    {
+        return jsonData != input.jsonData || &handle != &input.handle;
+    }
+
+} __taskNull{NULL, NULL};
+
 /**
  * @brief 
  * class for queue action do in other thread, no block current
  */
 class ProgramEventLoop
 {
+    //std::mutex &__lockGlobal;
     std::mutex __lockEventLoop;
-    std::queue<std::function<void()>> __qVoid;
+    std::queue<task_json> __qVoid;
     int __stop = 1;
     int __runing = 0;
     std::thread __thread;
@@ -33,30 +63,31 @@ class ProgramEventLoop
                 break;
             }
 
-            std::function<void()> a = NULL;
+            task_json t = __taskNull;
 
             if (__lockEventLoop.try_lock())
             {
                 if (__qVoid.size() > 0)
                 {
-                    a = __qVoid.front();
+                    t = __qVoid.front();
                     __qVoid.pop();
                 }
                 __lockEventLoop.unlock();
             }
 
-            if (a != NULL)
-            {   
+            if (t != __taskNull)
+            {
                 // do fire and forget, if too much can overheat CPU, can do semarphore lock to keep concurrent thread runing
-                //std::thread ta(a); 
+                //std::thread ta(a);
 
                 //do block one by one
-                a();                
-                a = NULL;
+                t.handle(t.jsonData);
+
+                delete &t;
             }
 
-            std::this_thread::sleep_for(std::chrono::nanoseconds(1));
-            //std::this_thread::sleep_for(std::chrono::seconds(1));
+            //std::this_thread::sleep_for(std::chrono::nanoseconds(1));//this stress CPU
+            std::this_thread::sleep_for(std::chrono::microseconds(1)); // this oki
         }
 
         if (__lockEventLoop.try_lock())
@@ -69,6 +100,7 @@ class ProgramEventLoop
 public:
     ProgramEventLoop() : __thread()
     {
+        ProgramContext::__version = "version 2";
     }
 
     ~ProgramEventLoop()
@@ -79,15 +111,15 @@ public:
     }
     /**
      * @brief 
-     * queue_action
+     * queue_action , void func will run in other thread, no block current
      * @param a void function callable
      * @return int 
      */
-    void queue_action(std::function<void()> a)
+    void queue_action(task_json task)
     {
         if (__lockEventLoop.try_lock())
         {
-            __qVoid.push(a);
+            __qVoid.push(task);
             __lockEventLoop.unlock();
         }
     }
@@ -148,3 +180,5 @@ public:
         return "";
     }
 };
+
+#endif

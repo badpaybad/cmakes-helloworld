@@ -36,33 +36,22 @@
 // #include "opencv2/video/background_segm.hpp"
 
 // #include "uwebsockets/App.h"
-// #include <nlohmann/json.hpp>
+//#include <nlohmann/json.hpp>
 
 #include "libs/common.h"
 #include "libs/common.h"
+#include "libs/ProgramContext.cpp"
 #include "libs/ProgramEventLoop.cpp"
 
 //cmake -B build -S .
 //cmake --build build
 
-std::mutex __lockGlobal;
-//thread safe with lock for queue
+//need thread safe with lock for queue
 std::queue<int> __qKeyboardInput;
 std::stack<int> __stackTest;
 std::map<std::string, std::string> __mapTest;
 
 ProgramEventLoop *_programEventLoop;
-
-bool __stop;
-int quit()
-{
-    if (__lockGlobal.try_lock())
-    {
-        __stop = true;
-        __lockGlobal.unlock();
-    }
-    return 0;
-}
 
 int thread_show_keyboardInput()
 {
@@ -70,12 +59,12 @@ int thread_show_keyboardInput()
 
     while (true)
     {
-        if (__stop)
+        if (ProgramContext::__stop == 1)
         {
             break;
         }
         char c = NULL;
-        if (__lockGlobal.try_lock())
+        if (ProgramContext::__lockGlobal.try_lock())
         {
             qsize = __qKeyboardInput.size();
             if (qsize > 0)
@@ -88,7 +77,7 @@ int thread_show_keyboardInput()
                 //__stackTest.pop();
             }
 
-            __lockGlobal.unlock();
+            ProgramContext::__lockGlobal.unlock();
         }
 
         if (c != NULL)
@@ -132,43 +121,47 @@ int thread_main_async(int argc, char *argv[], std::string baseDir)
     std::cout << &ip << std::endl;
     std::cout << "*ip: ";
     std::cout << *ip << std::endl;
-    
+
     std::cout << "&var: ";
     std::cout << &var << std::endl;
-    
+
     ///end testpointer
 
-    //this is not main thread, have to use mutex or __lockGlobal if want to access variable in other thread
-    std::cout << "\r\nNumber of threads = " << std::thread::hardware_concurrency() << "\r\n";
-
-    std::cout << "baseDir: " + baseDir + "\r\n";
     __mapTest["baseDir"] = baseDir;
 
     //do background in other thread, no block current thread
-    _programEventLoop->queue_action(
-        []()
-        {
-            //anonymous function , lambda function
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
-            std::cout << "\r\nqueue_action: delay 0.5 sec to run, anonymous function , lambda function\r\n";
 
-            //test use map
-            //todo: may lack here cause thread may not safe, __mapTest assign key baseDir in thread thread_main_async, but queue_action will run in thread thrEventLoop(thread_queue_action_invoke)
+    task_json ttest;
+    ttest.jsonData = "{}";
+    ttest.handle = [](std::string)
+    {
+        //anonymous function , lambda function
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::cout << "\r\nqueue_action: delay 0.5 sec to run, anonymous function , lambda function\r\n";
 
-            auto find = __mapTest.find("baseDir");
-            if (find != __mapTest.end())
-                std::cout << "\r\nmap Found: " << find->first << ": " << find->second << "\r\n";
-        });
+        //test use map
+        //todo: may lack here cause thread may not safe, __mapTest assign key baseDir in thread thread_main_async, but queue_action will run in thread thrEventLoop(thread_queue_action_invoke)
+
+        auto find = __mapTest.find("baseDir");
+        if (find != __mapTest.end())
+            std::cout << "\r\nmap Found: " << find->first << ": " << find->second << "\r\n";
+    };
+
+    _programEventLoop->queue_action(ttest);
 
     return 0;
 }
 
 int main(int argc, char *argv[])
 {
-    std::string argv_str(argv[0]);
-    std::replace(argv_str.begin(), argv_str.end(), '\\', '/');
-    std::string baseDir = argv_str.substr(0, argv_str.find_last_of("/"));
-    __stop = false;
+    ProgramContext::init(argc, argv);
+
+    //this is not main thread, have to use mutex or __lockGlobal if want to access variable in other thread
+    std::cout << "\r\nNumber of threads = " << std::thread::hardware_concurrency() << "\r\n";
+
+    std::cout << "baseDir: " + ProgramContext::__baseDir + "\r\n";
+
+    ProgramContext::__stop = 0;
 
     _programEventLoop = new ProgramEventLoop();
     _programEventLoop->start();
@@ -176,15 +169,15 @@ int main(int argc, char *argv[])
     // do other thread here, use queue to do message passing between threads
     // do async
 
-    std::thread thrMainAsync(thread_main_async, argc, argv, baseDir);
+    std::thread thrMainAsync(thread_main_async, argc, argv, ProgramContext::__baseDir);
 
-    std::cout << "Press Enter then type 'q' key to quit\r\n";
+    std::cout << "Press 'Enter' for show menu\r\n";
 
     std::thread thrShowKeyboardInput(thread_show_keyboardInput);
 
     while (true)
     {
-        if (__stop)
+        if (ProgramContext::__stop == 1)
         {
             break;
         }
@@ -196,11 +189,11 @@ int main(int argc, char *argv[])
         {
             //read any key input from keyboard
             int input = _getch();
-            if (__lockGlobal.try_lock())
+            if (ProgramContext::__lockGlobal.try_lock())
             {
                 __qKeyboardInput.push(input);
                 __stackTest.push(input);
-                __lockGlobal.unlock();
+                ProgramContext::__lockGlobal.unlock();
             }
             //if(input==32) break; //space pressed
             if (input == 13)
@@ -212,21 +205,28 @@ int main(int argc, char *argv[])
 
                 if (q == (int)'q')
                 {
-                    if (__lockGlobal.try_lock())
-                    {
-                        __stop = true;
-                        __lockGlobal.unlock();
-                    }
+                    ProgramContext::exit();
                 }
                 if (q == (int)'a')
                 {
-                    _programEventLoop->queue_action(
-                        []()
-                        {
-                            time_t now = time(0);
-                            char *dt = ctime(&now);
-                            std::cout << "\r\n_programEventLoop->queue_action called at: " << dt << "\r\n";
-                        });
+                    // nlohmann::json data;
+                    // data["name"] = "nguyen phan du";
+                    // auto jsonData = data.dump();
+
+                    task_json t1;
+                    t1.jsonData = "jsonData";
+
+                    //here is lambad, anonymous func, can callable any void function
+                    t1.handle = [](std::string jsonInput)
+                    {
+                        time_t now = time(0);
+                        char *dt = ctime(&now);
+                        std::cout << "\r\n_programEventLoop->queue_action called at: " << dt << "\r\n";
+                        std::cout << "\r\n"
+                                  << jsonInput << "\r\n";
+                    };
+
+                    _programEventLoop->queue_action(t1);
                 }
             }
         }
