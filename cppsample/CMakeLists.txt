@@ -3,6 +3,8 @@ set(CMAKE_CXX_STANDARD 17)
 #fix: error C2039: 'string_view': should c++17
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 
+set( CMAKE_CXX_FLAGS " -pthread " )
+
 #ref: https://github.com/jameskbride/cmake-hello-world
 #https://vcpkg.io/en/docs/users/integration.html#cmake-integration
 #https://github.com/microsoft/vcpkg/blob/master/docs/examples/installing-and-using-packages.md
