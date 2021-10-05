@@ -36,6 +36,21 @@ use cmake with makefile
 
                 cppsample\CMakeLists.txt
 
+MY_VCPKG_INSTALLED_DIR in CMakeLists.txt have to change your own dir vcpkg git clone above
+
+                set (MY_VCPKG_INSTALLED_DIR "")
+                if (WIN32)
+                    set (MY_VCPKG_INSTALLED_DIR "C:/vcpkg")     
+                    if(NOT DEFINED VCPKG_TARGET_TRIPLET)
+                        set(VCPKG_TARGET_TRIPLET x64-windows)
+                    endif()
+                else()
+                    set (MY_VCPKG_INSTALLED_DIR "/vcpkg")     
+                    if(NOT DEFINED VCPKG_TARGET_TRIPLET)
+                        #set(VCPKG_TARGET_TRIPLET x64-linux)
+                    endif()
+                endif()
+
 cmake command 
 
                 cmake -B build -S .
