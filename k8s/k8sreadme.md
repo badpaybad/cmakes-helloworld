@@ -1,4 +1,8 @@
-﻿https://github.com/kubernetes/dashboard
+﻿# build docker from dockfile first
+
+
+
+https://github.com/kubernetes/dashboard
 
 https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md
 
