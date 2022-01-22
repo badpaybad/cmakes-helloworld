@@ -1,0 +1,22 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mnvntest-deploy
+spec:
+  selector:
+    matchLabels:
+      app: mnvntest
+      version: v1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mnvntest
+        version: v1
+    spec:
+      containers:
+      - name: mnvntest-container
+        image: mnvntest:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80

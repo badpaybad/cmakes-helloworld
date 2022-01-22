@@ -1,0 +1,13 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+    name: mnvntest-service
+spec:
+    selector:
+        app: mnvntest
+    type: LoadBalancer
+    ports:
+        - name: mnvntest-port
+          port: 9000
+          targetPort: 80
+    #clusterIP: 10.96.0.1
