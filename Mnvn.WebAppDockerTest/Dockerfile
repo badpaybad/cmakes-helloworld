@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y libgdiplus && rm -rf /var/lib/apt/lists
 RUN apt-get update -y
 #RUN apt-get install htop -y
 RUN apt-get install ffmpeg -y
+RUN apt-get install dphys-swapfile
 WORKDIR /app
 EXPOSE 80
 #EXPOSE 443
