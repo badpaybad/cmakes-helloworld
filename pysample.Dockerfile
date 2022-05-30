@@ -21,4 +21,4 @@ CMD [ "python3", "pysample.py"]
 #docker build -f pysample.Dockerfile -t pysample .
 #9002 public port
 #8001 internal app docker port, defind in pysample.py
-#docker run -it --rm -p 9002:8001 --name pysample_9002 pysample
+#docker run -d --restart always -it --rm -p 9002:8001 --name pysample_9002 pysample
