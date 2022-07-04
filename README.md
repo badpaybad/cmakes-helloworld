@@ -14,6 +14,9 @@ main code uvicorn, fastapi pysample.py
 main code phpsample.php , simple mvc with cmd: php -S 0.0.0.0:9000 phpsample.php :D 
 need someone create for laravel, lumen ...
 
+laravel + php8.0 + php8.0-fpm + nginx + php composer all in one dockerfile: https://github.com/badpaybad/dockerfile-ubuntu-laravel-php-fpm
+
+
 				docker build -f phpsample.Dockerfile -t phptest .
 				docker run -it --rm -p 9005:9000 --name phptest_9005 phptest 
 
