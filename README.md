@@ -95,7 +95,7 @@ have to upgrade to cmake 3.2xxx
 				#or can create folder build
 				cd build
 				cmake ..
-				cmake --build ..
+				cmake --build .
 
 				#cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE="D:/robot/vcpkg/scripts/buildsystems/vcpkg.cmake"
 ### check your vcpkg path in MakeLists.txt CMAKE_TOOLCHAIN_FILE

@@ -12,15 +12,15 @@ set( CMAKE_CXX_FLAGS " -pthread " )
 #cmake . -DCMAKE_TOOLCHAIN_FILE="/home/dunp/work/vcpkg/scripts/buildsystems/vcpkg.cmake"
 set (MY_VCPKG_INSTALLED_DIR "")
 if (WIN32)
-     set (MY_VCPKG_INSTALLED_DIR "C:/vcpkg")     
-     if(NOT DEFINED VCPKG_TARGET_TRIPLET)
-          #set(VCPKG_TARGET_TRIPLET x64-windows)
-     endif()
+    set (MY_VCPKG_INSTALLED_DIR "C:/vcpkg")     
+    if(NOT DEFINED VCPKG_TARGET_TRIPLET)
+        #set(VCPKG_TARGET_TRIPLET x64-windows)
+    endif()
 else()
-     set (MY_VCPKG_INSTALLED_DIR "/vcpkg")     
-     if(NOT DEFINED VCPKG_TARGET_TRIPLET)
-          #set(VCPKG_TARGET_TRIPLET x64-linux)
-     endif()
+    set (MY_VCPKG_INSTALLED_DIR "/vcpkg")     
+    if(NOT DEFINED VCPKG_TARGET_TRIPLET)
+        #set(VCPKG_TARGET_TRIPLET x64-linux)
+    endif()
 endif()
 message("MY_VCPKG_INSTALLED_DIR: ${MY_VCPKG_INSTALLED_DIR}")
 
@@ -28,7 +28,7 @@ set(MY_VCPKG_INSTALLED_DIR_INCLUDE "${MY_VCPKG_INSTALLED_DIR}/installed/${VCPKG_
 message("MY_VCPKG_INSTALLED_DIR_INCLUDE: ${MY_VCPKG_INSTALLED_DIR_INCLUDE}")
 
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-     set(CMAKE_TOOLCHAIN_FILE "${MY_VCPKG_INSTALLED_DIR}/scripts/buildsystems/vcpkg.cmake")
+    set(CMAKE_TOOLCHAIN_FILE "${MY_VCPKG_INSTALLED_DIR}/scripts/buildsystems/vcpkg.cmake")
 endif()
 
 project (CMakeHelloWorld)
@@ -47,10 +47,10 @@ message("CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
 message("CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
 message("")
 
-find_package(OpenCV CONFIG REQUIRED)
-message("OpenCV_DIR: ${OpenCV_DIR}")
-message("OpenCV_LIBS: ${OpenCV_LIBS}")
-message("")
+#find_package(OpenCV CONFIG REQUIRED)
+#message("OpenCV_DIR: ${OpenCV_DIR}")
+#message("OpenCV_LIBS: ${OpenCV_LIBS}")
+#message("")
 
 #find_package(uwebsockets CONFIG REQUIRED)
 
@@ -77,15 +77,16 @@ add_library (PRJ_LIBS ${PRJ_LIBS_SOURCE})
 #include the subdirectory containing our libs
 add_subdirectory (libs)
 
-include_directories(libs ${MY_VCPKG_INSTALLED_DIR_INCLUDE} ${UWEBSOCKETS_INCLUDE_DIRS} ${OpenCV_DIR})
+#include_directories(libs ${MY_VCPKG_INSTALLED_DIR_INCLUDE} ${UWEBSOCKETS_INCLUDE_DIRS} ${OpenCV_DIR})
+include_directories(libs ${MY_VCPKG_INSTALLED_DIR_INCLUDE} ${UWEBSOCKETS_INCLUDE_DIRS})
 #
 #add_executable(${PROJECT_NAME} libs ${UWEBSOCKETS_INCLUDE_DIRS} "libs/httpserver.cpp" "program.cpp")
 add_executable(${PROJECT_NAME} "program.cpp")
 
 set (SHARED_LIBS 
-     ZLIB::ZLIB
-     ${USOCKETS_LIB}
-     ${LIBUV_LIB}               
+    ZLIB::ZLIB
+    ${USOCKETS_LIB}
+    ${LIBUV_LIB}               
 )
 
 target_link_libraries(PRJ_LIBS ${OpenCV_LIBS} ${SHARED_LIBS} nlohmann_json nlohmann_json::nlohmann_json)
@@ -96,21 +97,21 @@ target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} ${SHARED_LIBS} PRJ_LIBS nlo
 file(GLOB PRJ_LIBS_HEADERS "libs/*.h")
 
 IF (WIN32)
-     IF (NOT DEFINED CMAKE_TOOLCHAIN_FILE)      
-          #if dont use vcpkg
-          #reference dll by copy to folder run
-          file (COPY "C:/opencv/build/x64/vc15/bin/" DESTINATION "Debug" FILES_MATCHING PATTERN "*.dll")
-     ENDIF()
-     
-     #add resource file
-     file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/1.png DESTINATION "Debug")
-     
+    IF (NOT DEFINED CMAKE_TOOLCHAIN_FILE)      
+        #if dont use vcpkg
+        #reference dll by copy to folder run
+        file (COPY "C:/opencv/build/x64/vc15/bin/" DESTINATION "Debug" FILES_MATCHING PATTERN "*.dll")
+    ENDIF()
+    
+    #add resource file
+    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/1.png DESTINATION "Debug")
+    
      #copy own libs *.h
-     file(COPY ${PRJ_LIBS_HEADERS} DESTINATION "Debug/libs")
+    file(COPY ${PRJ_LIBS_HEADERS} DESTINATION "Debug/libs")
 ELSE()
-     
-     #copy own libs
-     file(COPY ${PRJ_LIBS_HEADERS} DESTINATION "libs")
+    
+    #copy own libs
+    file(COPY ${PRJ_LIBS_HEADERS} DESTINATION "libs")
 ENDIF()
 
 # add_custom_target(clean-cmake-files

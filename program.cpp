@@ -5,19 +5,19 @@
 #include <ctime>
 #include <thread>
 
-#include "opencv2/imgproc.hpp"
-#include "opencv2/videoio.hpp"
-#include "opencv2/highgui.hpp"
-#include "opencv2/video/background_segm.hpp"
+// #include "opencv2/imgproc.hpp"
+// #include "opencv2/videoio.hpp"
+// #include "opencv2/highgui.hpp"
+// #include "opencv2/video/background_segm.hpp"
 
 #include "libs/human.h"
 #include "libs/httpserver.h"
 #include "uwebsockets/App.h"
 #include <nlohmann/json.hpp>
 
-#include "opencv2/imgproc.hpp"
-#include "opencv2/ximgproc.hpp"
-#include "opencv2/videoio.hpp"
+// #include "opencv2/imgproc.hpp"
+// #include "opencv2/ximgproc.hpp"
+// #include "opencv2/videoio.hpp"
 
 //#include <conio.h>
 
@@ -81,48 +81,48 @@ int main(int argc, char *argv[])
     int canny_aperture_size = 3;
     bool do_merge = false;
 
-    cv::Ptr<cv::ximgproc::FastLineDetector> fld = cv::ximgproc::createFastLineDetector(length_threshold,
-                                                                                       distance_threshold, canny_th1, canny_th2, canny_aperture_size,
-                                                                                       do_merge);
+    // cv::Ptr<cv::ximgproc::FastLineDetector> fld = cv::ximgproc::createFastLineDetector(length_threshold,
+    //                                                                                    distance_threshold, canny_th1, canny_th2, canny_aperture_size,
+    //                                                                                    do_merge);
 
-    std::string argv_str(argv[0]);
-    std::replace(argv_str.begin(), argv_str.end(), '\\', '/');
-    std::string baseDir = argv_str.substr(0, argv_str.find_last_of("/"));
+    // std::string argv_str(argv[0]);
+    // std::replace(argv_str.begin(), argv_str.end(), '\\', '/');
+    // std::string baseDir = argv_str.substr(0, argv_str.find_last_of("/"));
 
-    std::cout << "baseDir: " + baseDir + "\r\n";
+    // std::cout << "baseDir: " + baseDir + "\r\n";
 
-    std::string strFromChar;
+    // std::string strFromChar;
 
-    cv::Mat img = cv::imread(baseDir + "/1.png", cv::IMREAD_GRAYSCALE);
-    //Mat img = imread("/home/dunp/work/cmakes-helloworld/1.png", IMREAD_GRAYSCALE);
+    // cv::Mat img = cv::imread(baseDir + "/1.png", cv::IMREAD_GRAYSCALE);
+    // //Mat img = imread("/home/dunp/work/cmakes-helloworld/1.png", IMREAD_GRAYSCALE);
 
-    cv::Mat dst;
+    // cv::Mat dst;
 
-    std::vector<std::vector<cv::Point>> contours;
-    std::vector<cv::Vec4i> hierarchy;
+    // std::vector<std::vector<cv::Point>> contours;
+    // std::vector<cv::Vec4i> hierarchy;
 
-    findContours(img, contours, hierarchy, cv::RETR_CCOMP, cv::CHAIN_APPROX_SIMPLE);
+    // findContours(img, contours, hierarchy, cv::RETR_CCOMP, cv::CHAIN_APPROX_SIMPLE);
 
-    dst = cv::Mat::zeros(img.size(), CV_8UC3);
-    if (contours.size() == 0)
-        return 0;
-    // iterate through all the top-level contours,
-    // draw each connected component with its own random color
-    int idx = 0, largestComp = 0;
-    double maxArea = 0;
-    for (; idx >= 0; idx = hierarchy[idx][0])
-    {
-        const std::vector<cv::Point> &c = contours[idx];
-        double area = fabs(cv::contourArea(cv::Mat(c)));
-        if (area > maxArea)
-        {
-            maxArea = area;
-            largestComp = idx;
-        }
-    }
-    cv::Scalar color(0, 0, 255);
+    // dst = cv::Mat::zeros(img.size(), CV_8UC3);
+    // if (contours.size() == 0)
+    //     return 0;
+    // // iterate through all the top-level contours,
+    // // draw each connected component with its own random color
+    // int idx = 0, largestComp = 0;
+    // double maxArea = 0;
+    // for (; idx >= 0; idx = hierarchy[idx][0])
+    // {
+    //     const std::vector<cv::Point> &c = contours[idx];
+    //     double area = fabs(cv::contourArea(cv::Mat(c)));
+    //     if (area > maxArea)
+    //     {
+    //         maxArea = area;
+    //         largestComp = idx;
+    //     }
+    // }
+    // cv::Scalar color(0, 0, 255);
 
-    drawContours(dst, contours, largestComp, color, cv::FILLED, cv::LINE_8, hierarchy);
+    // drawContours(dst, contours, largestComp, color, cv::FILLED, cv::LINE_8, hierarchy);
 
     // imshow("dst",dst);
     // char keycode = (char)cv::waitKey(0);

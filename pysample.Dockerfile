@@ -16,6 +16,8 @@ RUN pip3 install imutils
 RUN pip3 install python-multipart
 
 #CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+EXPOSE 8001
+#uvicorn.run("pysample:app", host="0.0.0.0", port=8001, log_level="info")
 CMD [ "python3", "pysample.py"]
 
 #docker build -f pysample.Dockerfile -t pysample .
