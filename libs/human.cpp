@@ -8,7 +8,7 @@ namespace Human
 {
     void Man::sayHello()
     {
-        std::cout << "Hello, I am man!\n";
+        std::cout << "Hello, I am " << _name <<"\r\n";
     }
 
     /**

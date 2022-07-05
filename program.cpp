@@ -71,8 +71,21 @@ int main(int argc, char *argv[])
     //     }
     // }
 
-    Human::Man *me = new Man();
+    Human::Man *me = new Man("Du");
     me->sayHello();
+
+    Human::Man other= Human::Man("Other");
+    other.sayHello();
+    
+    me->_name="Du changed";
+    other._name="Other changed";
+
+    //other=*me;    
+    //me=&other;
+    //*me=other;
+
+    std::cout << me->toString() <<"\r\n";
+    std::cout << other.toString() <<"\r\n";
 
     int length_threshold = 10;
     float distance_threshold = 1.41421356f;
