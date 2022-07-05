@@ -81,10 +81,10 @@ int main(int argc, char *argv[])
     other._name = "Other changed";
 
     //// by ref // change me or other will both change
-    //me = &other; 
+    // me = &other;
 
     //// by val // change me or other just only changed separate
-    // other=*me; 
+    // other=*me;
     //*me=other; //
 
     // other._name="xxx";
@@ -149,28 +149,31 @@ int main(int argc, char *argv[])
 
     // register routing to function handle logic
     uws_app_get(app, "/", get_handler);
+
     uws_app_get(app, "/about", get_handler_about);
- 
-    // start httpserver then block main thread if dont use thread
 
-    std::thread webthread= std::thread([&app](){    
-        uws_app_listen(app, __port, listen_handler);
-        uws_app_run(app);
-    });
+    uws_app_post(app, "/test/post", get_handler_about);
 
-    while (true)
-    {
-        // block main thread prevent web server end
-        // current date/time based on current system
-        time_t now = time(0);
+    std::thread webthread = std::thread([&app]()
+                                        {        
+        
+            //do your other logic in other thread, cause main thread for web
+            while (true)
+            {            
+                // current date/time based on current system
+                time_t now = time(0);
 
-        // convert now to string form
-        char *dt = ctime(&now);
+                // convert now to string form
+                char *dt = ctime(&now);
 
-        std::cout << "The local date and time is: " << dt << std::endl;
+                std::cout << "The local date and time is: " << dt << std::endl;
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    }
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            } });
+
+    // start httpserver then block main thread
+    uws_app_listen(app, __port, listen_handler);
+    uws_app_run(app);
 
     webthread.join();
 }
