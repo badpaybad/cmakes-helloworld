@@ -39,7 +39,7 @@ extern "C"
     {
         auto j3 = nlohmann::json::parse(R"({"name": "nguyen phan du","nlohmann": "https://github.com/nlohmann/json", "json":true, "version":1})");
 
-        //uws_res_end(res, "{'name':'nguyen phan du'}", 11);
+        // uws_res_end(res, "{'name':'nguyen phan du'}", 11);
         auto about = j3.dump();
         auto aboutC = about.c_str();
         uws_res_end(res, aboutC, strlen(aboutC));
@@ -61,12 +61,12 @@ int main(int argc, char *argv[])
 {
 
     std::cout << "Hello world! I am Du\r\n";
-    
+
     // while (true)
     // {
     //     if (kbhit() != 0)
     //     {//read any key input from keyboard
-    //         int input = getch();            
+    //         int input = getch();
     //         if(input==32) break;
     //     }
     // }
@@ -74,18 +74,23 @@ int main(int argc, char *argv[])
     Human::Man *me = new Man("Du");
     me->sayHello();
 
-    Human::Man other= Human::Man("Other");
+    Human::Man other = Human::Man("Other");
     other.sayHello();
-    
-    me->_name="Du changed";
-    other._name="Other changed";
 
-    //other=*me;    
-    //me=&other;
-    //*me=other;
+    me->_name = "Du changed";
+    other._name = "Other changed";
 
-    std::cout << me->toString() <<"\r\n";
-    std::cout << other.toString() <<"\r\n";
+    //// by ref // change me or other will both change
+    //me = &other; 
+
+    //// by val // change me or other just only changed separate
+    // other=*me; 
+    //*me=other; //
+
+    // other._name="xxx";
+
+    std::cout << me->toString() << "\r\n";
+    std::cout << other.toString() << "\r\n";
 
     int length_threshold = 10;
     float distance_threshold = 1.41421356f;
@@ -141,11 +146,11 @@ int main(int argc, char *argv[])
     // char keycode = (char)cv::waitKey(0);
 
     uws_app_t *app = uws_create_app();
-    //register routing:
+    // register routing:
     uws_app_get(app, "/", get_handler);
     uws_app_get(app, "/about", get_handler_about);
 
-    //start httpserver then block main thread
+    // start httpserver then block main thread
     uws_app_listen(app, __port, listen_handler);
     uws_app_run(app);
 
