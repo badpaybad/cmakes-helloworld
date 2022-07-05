@@ -146,16 +146,21 @@ int main(int argc, char *argv[])
     // char keycode = (char)cv::waitKey(0);
 
     uws_app_t *app = uws_create_app();
-    // register routing:
+
+    // register routing to function handle logic
     uws_app_get(app, "/", get_handler);
     uws_app_get(app, "/about", get_handler_about);
+ 
+    // start httpserver then block main thread if dont use thread
 
-    // start httpserver then block main thread
-    uws_app_listen(app, __port, listen_handler);
-    uws_app_run(app);
+    std::thread webthread= std::thread([&app](){    
+        uws_app_listen(app, __port, listen_handler);
+        uws_app_run(app);
+    });
 
     while (true)
     {
+        // block main thread prevent web server end
         // current date/time based on current system
         time_t now = time(0);
 
@@ -166,4 +171,6 @@ int main(int argc, char *argv[])
 
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
+
+    webthread.join();
 }
