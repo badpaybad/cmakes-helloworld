@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.2)
+cmake_minimum_required (VERSION 3.1)
 set(CMAKE_CXX_STANDARD 17)
 #fix: error C2039: 'string_view': should c++17
 set(CMAKE_CXX_STANDARD_REQUIRED on)
@@ -61,8 +61,8 @@ message("")
 #https://github.com/uNetworking/uWebSockets/issues/1043
 find_package(ZLIB REQUIRED)
 find_library(USOCKETS_LIB uSockets)
-find_package(unofficial-libuv CONFIG REQUIRED)
-find_library(LIBUV_LIB libuv)
+#find_package(libuv CONFIG REQUIRED)
+#find_library(LIBUV_LIB libuv)
 
 find_package(nlohmann_json CONFIG REQUIRED)
 #target_link_libraries(main PRIVATE nlohmann_json nlohmann_json::nlohmann_json)
@@ -86,7 +86,7 @@ add_executable(${PROJECT_NAME} "program.cpp")
 set (SHARED_LIBS 
     ZLIB::ZLIB
     ${USOCKETS_LIB}
-    ${LIBUV_LIB}               
+#    ${LIBUV_LIB}               
 )
 
 target_link_libraries(PRJ_LIBS ${OpenCV_LIBS} ${SHARED_LIBS} nlohmann_json nlohmann_json::nlohmann_json)

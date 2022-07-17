@@ -83,8 +83,11 @@ have to upgrade to cmake 3.2xxx
 
 ### commandc
 
-				./vcpkg install opencv[core,cuda,contrib]
+				#./vcpkg install opencv[core,cuda,contrib]
 				./vcpkg install uwebsockets
+				#./vcpkg install libuv
+				#./vcpkg install unofficial-libuv
+				./vcpkg install nlohmann-json
 
 				cmake . 
 				cmake --build .
