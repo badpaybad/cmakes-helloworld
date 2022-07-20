@@ -44,7 +44,7 @@ async def api_img2base64(image: UploadFile = File(...)):
     pass
 
 @app.get("/")
-async def root():
+def root():
     return {"message": "api description URI: /docs"}    
 
 # can move __main__ to other file
