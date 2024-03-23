@@ -1,0 +1,126 @@
+
+# docker-compose up
+#docker compose -f "docker-compose-db.yml" -p "db" up -d
+# Remove containers based on status:
+# docker rm -v $(docker ps --filter status=exited -q)
+# Note:
+#     The "-v" option that will delete any volumes associated with the containers.
+# To clean out all containers on my development machine:
+# sudo docker rm -v -f $(sudo docker ps -qa)
+# Note:
+#     The "-f" option will force the removal of a running container
+# To delete all containers including its volumes use,
+# docker rm -vf $(docker ps -aq)
+# To delete all the images,
+# sudo docker rmi -f $(sudo docker images -aq)
+
+version: "3.1"
+services:
+
+  mssql:
+    user: mssql
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Test@123456"
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    #container_name: mssqlserver 
+    restart: always
+    volumes:
+      - /home/dunp/docker/mssql/data:/var/opt/mssql/data
+      - /home/dunp/docker/mssql/backup:/var/opt/mssql/backup
+    ports:
+      - "1433:1433"
+    healthcheck:
+        test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Test@123456 -Q 'SELECT 1' || exit 1"]
+        interval: 10s
+        retries: 10
+        start_period: 10s
+        timeout: 3s    
+  #https://github.com/docker/awesome-compose/blob/master/aspnet-mssql/compose.yaml
+
+  ##database: redis, mysql, mongodb will follow the official site, and change volumes, port , uid pwd to connect        
+  redisdb:
+    user: redis
+    #https://hub.docker.com/_/redis
+    image: redis:6.2-alpine
+    restart: always    
+    ports:
+      - '6379:6379'
+    #command: redis-server --save 20 1 --loglevel warning --requirepass 123456
+    command: redis-server --save 20 1 --loglevel warning --requirepass Test@123456
+    volumes:
+      # when docker restart no lost data
+      - /home/dunp/docker/redis:/data
+      #- ~/redis:/data # "~/" folder local in C:\Users\Admin\redis 
+
+  mysqldb:
+    user: mysql
+    #https://hub.docker.com/_/mysql
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      #can be volumes, nfs , local disk
+      - /home/dunp/docker/mysql:/var/lib/mysql
+      #- D:/dockersampleforaspdotnet/mysql1:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=test
+      - MYSQL_ROOT_PASSWORD=Test@123456
+      - MYSQL_PASSWORD=Test@123456
+      - MYSQL_USER=test
+
+  mongodb5:
+    user: mongodb
+    #https://hub.docker.com/_/mongo
+    image: mongo:5.0
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - /home/dunp/docker/mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=Test@123456
+
+  zookeeper38:
+    user: root
+    image: docker.io/bitnami/zookeeper:3.8
+    restart: always
+    ports:
+      - "2181:2181"
+    volumes:
+      - "/home/dunp/docker/zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka32:
+    user: root
+    image: docker.io/bitnami/kafka:3.2
+    restart: always
+    ports:
+      - "9092:9092"
+    volumes:
+      - "/home/dunp/docker/kafka_data:/bitnami"
+    environment:
+      #- KAFKA_BROKER_ID=1
+      #- KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    depends_on:
+      - zookeeper38
+
+  postgresdb:
+    user: root
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=Test@123456
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - /home/dunp/docker/postgresql:/var/lib/postgresql/data
