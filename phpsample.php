@@ -51,6 +51,11 @@ $routingHandle["/index"] = "index";
 $routingHandle["/home"] = "index";
 $routingHandle["/about"] = "about";
 
+$routingHandle["/lambda"] = function(BaseRequest $requests){
+
+    return json_encode(["lambda" => "Nguyen Phan Du", "version" => "1.0.0","request" => $requests,]);
+};
+
 //end:routing register
 //end:do simple MVC
 
